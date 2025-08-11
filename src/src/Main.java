@@ -1,3 +1,5 @@
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import java.util.List;
 
 public class Main {
@@ -5,9 +7,11 @@ public class Main {
         System.out.println("I Declare this backend a JAVA backend");
 
         List<Particle> particles =
-                InitialStateParser.parse("particles_t0.json");
+                InitialStateParser.parse("particles_t0.json", List.class);
 
         System.out.println(particles);
+
+        InitialStateParser.buildInitialState();
 
     }
 }

@@ -14,23 +14,43 @@ import java.util.List;
 public class InitialStateParser {
     private static final Gson gson = new Gson();
 
-    public static <T> T parse(String resourceName) {
+    public static <T> T parse(String resourceName, Class<T> clazz) {
         ObjectMapper objectMapper = new ObjectMapper();
-        try{
-            T myObj = objectMapper.readValue(
-                new File("src/src/main/resources/" + resourceName),
-                new TypeReference<T>() {}
+        try {
+            return objectMapper.readValue(
+                    new File("src/src/main/resources/" + resourceName),
+                    clazz
             );
-            return myObj;
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-
     }
 
     public static void buildInitialState(){
-        InitialConditions ic = parse("initial_conditions.json");
+        InitialConditions ic = InitialStateParser.parse("initial_conditions.json", InitialConditions.class);
+
         //generate a list of particles with random x, y, theta
+        List<Particle> particles = new ArrayList<>();
+        for(int i = 0; i < ic.getN(); i++){
+            particles.add(new Particle(
+                Math.random() * ic.getL(), //x
+                Math.random() * ic.getL(), //y
+                ic.getR(),                 //r
+                ic.getV(),                 //v
+                Math.random() * 360 //theta
+            ));
+        }
+
+        //convert the list of particles to JSON
+        String json = gson.toJson(particles);
+        //write the JSON to a file
+        try {
+            File file = new File("src/src/main/resources/particles_t0.json");
+            file.createNewFile();
+            java.nio.file.Files.writeString(file.toPath(), json);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
