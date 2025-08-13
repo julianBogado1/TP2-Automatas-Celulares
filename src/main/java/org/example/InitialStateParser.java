@@ -3,6 +3,7 @@ package org.example;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import org.example.models.Particle;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -55,4 +56,20 @@ public class InitialStateParser {
             e.printStackTrace();
         }
     }
+
+
+    public static List<Particle> parseParticles(String resourceName) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(
+                    new File("src/main/resources/" + resourceName),
+                    new TypeReference<List<Particle>>() {}
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 }
