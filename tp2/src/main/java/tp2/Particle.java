@@ -1,3 +1,5 @@
+package tp2;
+
 public class Particle {
     private double x;
     private double y;

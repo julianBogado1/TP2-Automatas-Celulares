@@ -1,3 +1,5 @@
+package tp2;
+
 //Esta clase representa las condiciones iniciales que estan en initial_conditions.JSON
 
 public class InitialConditions {
