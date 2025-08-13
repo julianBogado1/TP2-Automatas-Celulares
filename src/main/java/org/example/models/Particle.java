@@ -18,23 +18,15 @@ public class Particle {
     }
     public Particle() {}
 
-
-    /*
-    * se asume que la particula vuelve a aparecer en el lado opuesto cuando llega al borde del espacio
-    * radio fijo
-    * v fija
-    * x(t+1) = x(t) + v dt
-    * */
-
-
     public double computeAvgTheta(List<Particle> particles) {
         double sumSin = 0.0;
         double sumCos = 0.0;
         for (Particle p : particles) {
-            sumSin += Math.sin(p.getTheta());
-            sumCos += Math.cos(p.getTheta());
+            sumSin += Math.sin(Math.toRadians(p.getTheta()));
+            sumCos += Math.cos(Math.toRadians(p.getTheta()));
         }
-        return Math.atan2(sumSin/ particles.size(), sumCos/particles.size());
+        System.out.println("SumSin: " + sumSin/ particles.size() + ", SumCos: " + sumCos/particles.size() + " Atan2: "+Math.atan2(sumSin/ particles.size(), sumCos/particles.size()));
+        return Math.toDegrees(Math.atan2(sumSin/ particles.size(), sumCos/particles.size()));
     }
 
     public double getX() {

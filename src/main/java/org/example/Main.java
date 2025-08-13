@@ -18,7 +18,7 @@ public class Main {
         for(int i=1; i < 11; i++) {
 
             StringBuilder sb = new StringBuilder();
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/time_slices/"+i+"txt"))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/time_slices/"+i+".txt"))) {
 
                 for(Particle p : particles) {
                     sb.append(p.getX()).append(" ")
@@ -33,7 +33,7 @@ public class Main {
                 e.printStackTrace();
             }
 
-            particles = nextFrame(particles, particles);    // por ahora son todas vecinas
+            particles = nextFrame(particles, particles);    // TODO por ahora son todas vecinas
         }
 
 
@@ -63,6 +63,7 @@ public class Main {
 
             double noise = 2L; //noise amplitude
             double newTheta = p.computeAvgTheta(neighbors) + (Math.random() - 0.5) * noise;
+            System.out.println("Old theta: " + p.getTheta() + ", New theta: " + newTheta);
 
             result.add(new Particle(newX, newY, p.getR(), p.getV(), newTheta));
         }
