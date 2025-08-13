@@ -1,7 +1,7 @@
-package org.example;
+package ar.edu.itba.sims;
 
-import org.example.models.Particle;
-import org.example.models.Vector;
+import ar.edu.itba.sims.models.Particle;
+import ar.edu.itba.sims.models.Vector;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

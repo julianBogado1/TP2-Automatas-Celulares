@@ -1,7 +1,6 @@
-package org.example.models;
+package ar.edu.itba.sims.models;
 
 import java.util.List;
-import java.util.Random;
 
 public class Particle {
     private double x;

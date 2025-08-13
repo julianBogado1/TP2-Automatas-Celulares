@@ -1,4 +1,4 @@
-package org.example.models;
+package ar.edu.itba.sims.models;
 
 public class Vector {
     public double x;

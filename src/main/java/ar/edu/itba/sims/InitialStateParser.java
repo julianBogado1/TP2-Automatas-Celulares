@@ -1,9 +1,9 @@
-package org.example;
+package ar.edu.itba.sims;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import org.example.models.Particle;
+import ar.edu.itba.sims.models.Particle;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package org.example;
+package ar.edu.itba.sims;
 
 //Esta clase representa las condiciones iniciales que estan en initial_conditions.JSON
 
