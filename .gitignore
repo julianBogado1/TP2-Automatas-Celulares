@@ -168,3 +168,5 @@ cython_debug/
 *.class
 
 .DS_Store
+
+**/time_slices/
