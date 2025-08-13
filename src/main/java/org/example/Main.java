@@ -1,4 +1,4 @@
-package tp2;
+package org.example;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 

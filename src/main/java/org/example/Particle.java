@@ -1,4 +1,4 @@
-package tp2;
+package org.example;
 
 public class Particle {
     private double x;

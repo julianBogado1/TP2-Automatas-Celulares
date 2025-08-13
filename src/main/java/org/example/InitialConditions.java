@@ -1,4 +1,4 @@
-package tp2;
+package org.example;
 
 //Esta clase representa las condiciones iniciales que estan en initial_conditions.JSON
 

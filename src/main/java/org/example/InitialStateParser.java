@@ -1,4 +1,4 @@
-package tp2;
+package org.example;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +20,7 @@ public class InitialStateParser {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.readValue(
-                    new File("src/src/main/resources/" + resourceName),
+                    new File("src/main/resources/" + resourceName),
                     clazz
             );
         } catch (Exception e) {
@@ -48,7 +48,7 @@ public class InitialStateParser {
         String json = gson.toJson(particles);
         //write the JSON to a file
         try {
-            File file = new File("src/src/main/resources/particles_t0.json");
+            File file = new File("src/main/resources/particles_t0.json");
             file.createNewFile();
             java.nio.file.Files.writeString(file.toPath(), json);
         } catch (Exception e) {

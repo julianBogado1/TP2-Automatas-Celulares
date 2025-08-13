@@ -6,10 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="src" />
+        <module name="tp2 (1) (tp2)" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="src" target="17" />
+      <module name="tp2 (2) (tp)" target="17" />
       <module name="TP2-Automatas-Celulares" target="1.5" />
     </bytecodeTargetLevel>
   </component>
