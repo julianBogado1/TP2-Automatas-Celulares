@@ -17,13 +17,13 @@ def path(*name: str):
     return pth.abspath(pth.join(pth.dirname(__file__), '..', 'resources', *name))
 
 @cache
-def config():
+def config(file: str | None = None) -> dict:
     """
     Reads the initial conditions from the JSON configuration file.
 
     :return: A dictionary containing the configuration.
     """
-    config_path = path('initial_conditions.json')
+    config_path = path(file if file is not None else 'initial_conditions.json')
 
     try:
         with open(config_path, 'r') as f:

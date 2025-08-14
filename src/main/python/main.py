@@ -7,6 +7,8 @@ import numpy as np
 
 import time
 
+import sys
+
 import frames
 from resources import config, path
 from streaming import SequentialStreamingExecutor as Executor
@@ -68,4 +70,5 @@ def main(length: float, count: int, save: bool):
         print(f"Animation saved at {filename}.")
 
 if __name__ == "__main__":
-    main(config()['l'], config()['n'], config()['save_gif'])
+    settings = config(sys.argv[1] if len(sys.argv) > 1 else None)
+    main(settings['l'], settings['n'], settings['save_gif'])
