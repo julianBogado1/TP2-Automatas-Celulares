@@ -75,8 +75,6 @@ public class Particle {
     }
 
     /**
-     * Returns the ID of the particle.
-     *
      * @return the ID of the particle
      */
     public long getId() {
