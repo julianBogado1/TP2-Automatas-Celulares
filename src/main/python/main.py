@@ -48,7 +48,7 @@ def main(length: float, count: int, save: bool):
 
         return q,
 
-    ani = FuncAnimation( # pyright: ignore[reportUnusedVariable]
+    ani = FuncAnimation(
         fig,
         update,
         frames=executor.stream(),
