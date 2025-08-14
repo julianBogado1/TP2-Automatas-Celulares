@@ -63,8 +63,8 @@ def main(length: float, count: int, save: bool):
 
     if save:
         print("Saving animation...")
-        filename = path("animations", f"particles_{int(time.time())}.gif")
-        ani.save(filename, writer='ffmpeg', fps=30, dpi=600)
+        filename = path("animations", f"particles_{int(time.time())}.mp4")
+        ani.save(filename, writer='ffmpeg', fps=60, dpi=600)
         print(f"Animation saved at {filename}.")
 
 if __name__ == "__main__":
