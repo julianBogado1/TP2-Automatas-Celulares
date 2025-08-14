@@ -12,8 +12,7 @@ def next(f: int):
     Assumes there is a .gitkeep in the directory.
     Assumes all the other files are input files.
     """
-    # TODO: Remove the +1
-    file_path = resources.path('time_slices', f"{f+1}.txt")
+    file_path = resources.path('time_slices', f"{f}.txt")
     with open(file_path, 'r') as file:
         # Iterate through the lines and convert them to Particles
         return f, [Particle(*map(float, line.strip().split())) for line in file]

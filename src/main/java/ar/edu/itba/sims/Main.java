@@ -28,7 +28,7 @@ public class Main {
             }
         }
 
-        for(int i=1; i < 11; i++) {
+        for(int i=0; i < 11; i++) {
 
             StringBuilder sb = new StringBuilder();
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(directoryPath + "/"+i+".txt"))) {
