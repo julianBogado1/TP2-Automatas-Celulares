@@ -169,5 +169,4 @@ cython_debug/
 
 .DS_Store
 
-**/time_slices/*
-!**/time_slices/.gitkeep
+**/time_slices/
