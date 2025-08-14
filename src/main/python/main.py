@@ -24,7 +24,7 @@ def main(length: float, count: int, save: bool):
     xdata, ydata, vxdata, vydata, color = [0.0] * count, [0.0] * count, [0.0] * count, [0.0] * count, [colormap(0)] * count
     q = ax.quiver(
         xdata, ydata, vxdata, vydata, color=color,
-        angles='xy', scale_units='xy', scale=10,
+        angles='xy', scale_units='xy', scale=4,
         headwidth=40, headlength=60, headaxislength=50, minlength=0
     )
 
