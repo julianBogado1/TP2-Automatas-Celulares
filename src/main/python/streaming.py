@@ -36,6 +36,7 @@ class SequentialStreamingExecutor[T]:
                 callback=done,
                 error_callback=lambda e: print(f"Error in task {task_id}: {e}")
             )
+        self.pool.close()
 
     def stream(self):
         """
@@ -55,6 +56,5 @@ class SequentialStreamingExecutor[T]:
 
     def close(self):
         self.manager.shutdown()
-        self.pool.close()
         self.pool.join()
         # print("StreamingExecutor closed.")
