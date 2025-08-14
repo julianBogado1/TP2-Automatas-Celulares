@@ -17,6 +17,7 @@ public abstract class CIM {
      * @param particles List of particles to evaluate
      * @param L         Length of the simulation box
      * @param Rc        Interaction radius
+     * @return A map where each key is a particle and the value is a list of particles that interact with it.
      */
     public static Map<Particle, List<Particle>> evaluate(final List<Particle> particles, double L, double Rc) {
         final var M = (int) (L / Rc);
