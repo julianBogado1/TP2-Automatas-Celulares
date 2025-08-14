@@ -4,6 +4,7 @@ import ar.edu.itba.sims.models.Particle;
 import ar.edu.itba.sims.models.Vector;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,10 +16,16 @@ public class Main {
 
         List<Particle> particles = InitialStateParser.parseParticles("particles_t0.json");
 
+        String directoryPath = "src/main/resources/time_slices";
+        final File directory = new File(directoryPath);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
         for(int i=1; i < 11; i++) {
 
             StringBuilder sb = new StringBuilder();
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/time_slices/"+i+".txt"))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(directoryPath + "/"+i+".txt"))) {
 
                 for(Particle p : particles) {
                     sb.append(p.getX()).append(" ")
