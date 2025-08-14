@@ -53,7 +53,7 @@ def main(length: float, count: int, save: bool):
         update,
         frames=executor.stream(),
         save_count=frames.count(),
-        interval=1,
+        interval=5,
         blit=True
     )
 
