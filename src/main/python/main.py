@@ -5,11 +5,13 @@ from matplotlib.animation import FuncAnimation
 
 import numpy as np
 
+import time
+
 import frames
-from resources import config
+from resources import config, path
 from streaming import SequentialStreamingExecutor as Executor
 
-def main(length: float, count: int):
+def main(length: float, count: int, save: bool):
     executor = Executor(frames.next, frames.count())
 
     fig, ax = plt.subplots(figsize=(length,length))
@@ -51,12 +53,18 @@ def main(length: float, count: int):
         update,
         frames=executor.stream(),
         save_count=frames.count(),
-        interval=200,
+        interval=1,
         blit=True
     )
 
     plt.show()
     executor.close()
 
+    if save:
+        print("Saving animation...")
+        filename = path("animations", f"particles_{int(time.time())}.gif")
+        ani.save(filename, writer='ffmpeg', fps=30, dpi=600)
+        print(f"Animation saved at {filename}.")
+
 if __name__ == "__main__":
-    main(config()['l'], config()['n'])
+    main(config()['l'], config()['n'], config()['save_gif'])

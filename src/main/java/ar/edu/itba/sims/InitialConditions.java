@@ -1,7 +1,10 @@
 package ar.edu.itba.sims;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 //Esta clase representa las condiciones iniciales que estan en initial_conditions.JSON
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class InitialConditions {
     private double r;
     private double v;
