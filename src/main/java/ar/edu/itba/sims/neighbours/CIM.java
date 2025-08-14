@@ -37,8 +37,8 @@ public abstract class CIM {
             for (Particle p1 : quadrant) {
                 for (Particle p2 : quadrant) {
                     if (p1.getId() < p2.getId() && p1.distance(p2, L) < R2) {
-                        result.computeIfAbsent(p1, _ -> new LinkedList<>()).add(p2);
-                        result.computeIfAbsent(p2, _ -> new LinkedList<>()).add(p1);
+                        result.computeIfAbsent(p1, k -> new LinkedList<>()).add(p2);
+                        result.computeIfAbsent(p2, k -> new LinkedList<>()).add(p1);
                     }
                 }
             }
