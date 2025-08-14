@@ -28,6 +28,44 @@ public class Particle {
         return Math.toDegrees(Math.atan2(sumSin/ particles.size(), sumCos/particles.size()));
     }
 
+    /**
+     * Calculates the distance to another particle.
+     * 
+     * @apiNote This method does not take into account the radius.
+     * @apiNote This method does not take into account periodic boundary conditions.
+     *
+     * @param other the other particle
+     * @return the distance to the other particle
+     */
+    public double distance(Particle other) {
+        final var dx = x - other.x;
+        final var dy = y - other.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    /**
+     * Calculates the distance to another particle.
+     * 
+     * @apiNote This method does not take into account the radius.
+     *
+     * @param other the other particle
+     * @return the distance to the other particle
+     */
+    public double distance(Particle other, double L) {
+        var dx = Math.abs(x - other.x);
+        var dy = Math.abs(y - other.y);
+
+        if (dx > L / 2) {
+            dx -= L;
+        }
+
+        if (dy > L / 2) {
+            dy -= L;
+        }
+
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
     public double getX() {
         return x;
     }
