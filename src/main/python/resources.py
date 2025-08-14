@@ -1,4 +1,7 @@
+from functools import cache
+
 import json
+
 import os.path as pth
 
 def path(*name: str):
@@ -13,6 +16,7 @@ def path(*name: str):
     """
     return pth.abspath(pth.join(pth.dirname(__file__), '..', 'resources', *name))
 
+@cache
 def config():
     """
     Reads the initial conditions from the JSON configuration file.
