@@ -28,22 +28,26 @@ public class Main {
             }
         }
 
-        for(int i=0; i < 11; i++) {
-
-            StringBuilder sb = new StringBuilder();
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(directoryPath + "/"+i+".txt"))) {
-
-                for(Particle p : particles) {
-                    sb.append(p.getX()).append(" ")
-                      .append(p.getY()).append(" ")
-                      .append(p.getR()).append(" ")
-                      .append(p.getV()).append(" ")
-                      .append(p.getTheta()).append("\n");
+        for(int i=0; i < 150; i++) {
+            // Only generate output every 1000 iterations
+            // TODO: make this configurable (could be named step)
+            final var animation_step = 5;
+            if (i % animation_step == 0) {
+                StringBuilder sb = new StringBuilder();
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(directoryPath + "/"+i/animation_step+".txt"))) {
+    
+                    for(Particle p : particles) {
+                        sb.append(p.getX()).append(" ")
+                          .append(p.getY()).append(" ")
+                          .append(p.getR()).append(" ")
+                          .append(p.getV()).append(" ")
+                          .append(p.getTheta()).append("\n");
+                    }
+                    writer.write(sb.toString());
+    
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                writer.write(sb.toString());
-
-            } catch (IOException e) {
-                e.printStackTrace();
             }
 
             particles = nextFrame(particles, particles);    // TODO por ahora son todas vecinas
