@@ -54,7 +54,8 @@ def main(length: float, count: int, save: bool):
         frames=executor.stream(),
         save_count=frames.count(),
         interval=5,
-        blit=True
+        blit=True,
+        repeat=True
     )
 
     plt.show()
