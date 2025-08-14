@@ -170,5 +170,6 @@ cython_debug/
 .DS_Store
 
 **/time_slices/
+**/animations/*.gif
 
 particles_t0.json
