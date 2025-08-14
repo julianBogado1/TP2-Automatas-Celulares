@@ -20,6 +20,12 @@ public class Main {
         final File directory = new File(directoryPath);
         if (!directory.exists()) {
             directory.mkdirs();
+        } else {
+            for (File file : directory.listFiles()) {
+                if (file.isFile()) {
+                    file.delete();
+                }
+            }
         }
 
         for(int i=1; i < 11; i++) {
