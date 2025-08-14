@@ -2,7 +2,15 @@ package ar.edu.itba.sims.models;
 
 import java.util.List;
 
+/**
+ * A particle in the simulation.
+ *
+ * Particles are identified by an auto-incremental ID generated at construction.
+ */
 public class Particle {
+    private static long SERIAL = 0;
+    private final long id = SERIAL++;
+
     private double x;
     private double y;
     private double r;       //el radio de interaccion con otras particulas
@@ -66,6 +74,15 @@ public class Particle {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
+    /**
+     * Returns the ID of the particle.
+     *
+     * @return the ID of the particle
+     */
+    public long getId() {
+        return id;
+    }
+
     public double getX() {
         return x;
     }
@@ -96,6 +113,7 @@ public class Particle {
     public void setTheta(double theta) {
         this.theta = theta;
     }
+
     @Override
     public String toString() {
         return "Particle{" +
@@ -105,5 +123,24 @@ public class Particle {
                 ", v=" + v +
                 ", theta=" + theta +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return Long.hashCode(id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+
+        if (obj == null)
+            return false;
+
+        if (!(obj instanceof Particle other))
+            return false;
+
+        return id == other.id;
     }
 }
