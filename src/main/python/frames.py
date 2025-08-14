@@ -17,7 +17,7 @@ def next(f: int):
     file_path = resources.path('time_slices', f"{f+1}.txt")
     with open(file_path, 'r') as file:
         # Iterate through the lines and convert them to Particles
-        return [Particle(*map(float, line.strip().split())) for line in file]
+        return f, [Particle(*map(float, line.strip().split())) for line in file]
 
 @cache
 def count():

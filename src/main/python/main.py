@@ -1,10 +1,15 @@
+from particle import Particle as TParticle
+
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
 import frames
 from resources import config
+from streaming import SequentialStreamingExecutor as Executor
 
 def main(length: float):
+    executor = Executor(frames.next, frames.count())
+
     fig, ax = plt.subplots()
 
     ax.set_aspect('equal')
@@ -14,8 +19,7 @@ def main(length: float):
     xdata, ydata = [], []
     ln, = ax.plot([], [], 'ro')
 
-    def update(frame: int):
-        particles = frames.next(frame)
+    def update(particles: list[TParticle]):
         xdata.clear()
         ydata.clear()
 
@@ -29,12 +33,14 @@ def main(length: float):
     ani = FuncAnimation( # pyright: ignore[reportUnusedVariable]
         fig,
         update,
-        frames=frames.count(),
+        frames=executor.stream(),
+        save_count=frames.count(),
         interval=200,
         blit=True
     )
 
     plt.show()
+    executor.close()
 
 if __name__ == "__main__":
     main(config()['l'])
