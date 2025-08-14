@@ -26,4 +26,4 @@ def count():
     Assumes there is a .gitkeep in the directory.
     Assumes all the other files are input files.
     """
-    return len(os.listdir(resources.path('time_slices'))) - 1 # Subtract 1 for .gitkeep
+    return len(os.listdir(resources.path('time_slices')))
