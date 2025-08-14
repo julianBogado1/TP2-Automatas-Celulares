@@ -170,3 +170,5 @@ cython_debug/
 .DS_Store
 
 **/time_slices/
+
+particles_t0.json
