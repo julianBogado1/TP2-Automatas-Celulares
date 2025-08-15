@@ -32,7 +32,6 @@ public class Particle {
             sumSin += Math.sin(p.getTheta());
             sumCos += Math.cos(p.getTheta());
         }
-//        System.out.println("SumSin: " + sumSin/ particles.size() + ", SumCos: " + sumCos/particles.size() + " Atan2: "+Math.atan2(sumSin/ particles.size(), sumCos/particles.size()));
         return Math.atan2(sumSin/ particles.size(), sumCos/particles.size());
     }
 

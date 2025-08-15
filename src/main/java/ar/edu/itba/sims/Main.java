@@ -84,7 +84,6 @@ public class Main {
 
             double newTheta = entry.getKey().computeAvgTheta(entry.getValue());
 //            + (Math.random() - 0.5) * noise
-//            System.out.println("Old theta: " + entry.getKey().getTheta() + ", New theta: " + newTheta);
 
             result.add(new Particle(newX, newY, entry.getKey().getR(), entry.getKey().getV(), newTheta));
         }
