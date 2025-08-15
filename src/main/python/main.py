@@ -73,4 +73,10 @@ def main(length: float, count: int, show: bool, save: bool):
 
 if __name__ == "__main__":
     settings = config(sys.argv[1] if len(sys.argv) > 1 else None)
+
+    if not (settings['save_animation'] or settings['show_animation']):
+        print("At least one of save_animation or show_animation must be true.")
+        print("Otherwise, this program is useless.")
+        sys.exit(0)
+
     main(settings['l'], settings['n'], settings['show_animation'], settings['save_animation'])
