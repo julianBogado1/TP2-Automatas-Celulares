@@ -4,6 +4,6 @@
   "l": 20,
   "n": 200,
   "noise": 0.1,
-  "show_animation": false,
+  "show_animation": true,
   "save_animation": false
 }
