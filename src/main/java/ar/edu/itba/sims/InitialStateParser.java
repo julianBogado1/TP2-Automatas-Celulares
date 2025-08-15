@@ -2,7 +2,6 @@ package ar.edu.itba.sims;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import ar.edu.itba.sims.models.Particle;
 
 import java.io.File;
@@ -13,10 +12,7 @@ import java.util.List;
 //      construir un estado inicial a partir de parametros (output JSON)
 //      parsear un estado inicial desde un archivo JSON
 
-
 public class InitialStateParser {
-    private static final Gson gson = new Gson();
-
     public static <T> T parse(String resourceName, Class<T> clazz) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {

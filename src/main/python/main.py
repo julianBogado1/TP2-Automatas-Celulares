@@ -26,7 +26,7 @@ def main(length: float, count: int, show: bool, save: bool):
     xdata, ydata, vxdata, vydata, angles = [0.0] * count, [0.0] * count, [0.0] * count, [0.0] * count, [0.0] * count
     q = ax.quiver(
         xdata, ydata, vxdata, vydata, angles,
-        angles='xy', scale_units='xy', scale=4, cmap="brg",
+        angles='xy', scale_units='xy', scale=4, cmap='hsv',
         norm=Normalize(vmin=0, vmax=2*np.pi),
         headwidth=40, headlength=60, headaxislength=50, minlength=0, pivot='middle'
     )
