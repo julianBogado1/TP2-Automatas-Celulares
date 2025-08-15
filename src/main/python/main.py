@@ -13,7 +13,7 @@ import frames
 from resources import config, path
 from streaming import SequentialStreamingExecutor as Executor
 
-def main(length: float, count: int, save: bool):
+def main(length: float, count: int, show: bool, save: bool):
     executor = Executor(frames.next, frames.count())
 
     colormap = plt.get_cmap('brg')
@@ -60,8 +60,8 @@ def main(length: float, count: int, save: bool):
         repeat=True
     )
 
-    plt.show()
-    executor.close()
+    if show:
+        plt.show()
 
     if save:
         print("Saving animation...")
@@ -69,6 +69,14 @@ def main(length: float, count: int, save: bool):
         ani.save(filename, writer='ffmpeg', fps=60)
         print(f"Animation saved at {filename}.")
 
+    executor.close()
+
 if __name__ == "__main__":
     settings = config(sys.argv[1] if len(sys.argv) > 1 else None)
-    main(settings['l'], settings['n'], settings['save_gif'])
+
+    if not (settings['save_animation'] or settings['show_animation']):
+        print("At least one of save_animation or show_animation must be true.")
+        print("Otherwise, this program is useless.")
+        sys.exit(0)
+
+    main(settings['l'], settings['n'], settings['show_animation'], settings['save_animation'])

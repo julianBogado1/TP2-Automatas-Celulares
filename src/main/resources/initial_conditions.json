@@ -4,5 +4,6 @@
   "l": 100,
   "n": 10000,
   "noise": 0.1,
-  "save_gif": true
+  "show_animation": false,
+  "save_animation": false
 }
