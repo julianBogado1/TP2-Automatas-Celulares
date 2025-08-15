@@ -16,8 +16,8 @@ from streaming import SequentialStreamingExecutor as Executor
 def main(length: float, count: int, save: bool):
     executor = Executor(frames.next, frames.count())
 
-    fig, ax = plt.subplots(figsize=(length,length))
     colormap = plt.get_cmap('brg')
+    fig, ax = plt.subplots()
 
     ax.set_aspect('equal')
     ax.set_xlim(0, length)
