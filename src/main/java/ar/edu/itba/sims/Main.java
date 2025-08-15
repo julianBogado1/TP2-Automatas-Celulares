@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 public class Main {
     public static void main(String[] args) {
@@ -54,6 +55,8 @@ public class Main {
     }
 
     public static void simulate(double L, double Rc, double noise, int steps, List<Particle> particles){
+        final var executor = Executors.newFixedThreadPool(12);
+
         String directoryPath = "src/main/resources/time_slices";
         final File directory = new File(directoryPath);
         if (!directory.exists()) {
@@ -67,32 +70,36 @@ public class Main {
         }
 
         for (int i = 0; i < steps; i++) {
-            // Only generate output every 1000 iterations
             // TODO: make this configurable (could be named step)
             final var animation_step = 5;
             if (i % animation_step == 0) {
-                StringBuilder sb = new StringBuilder();
-                try (BufferedWriter writer = new BufferedWriter(
-                        new FileWriter(directoryPath + "/" + i / animation_step + ".txt"))) {
-
-                    for (Particle p : particles) {
-                        sb.append(p.getX()).append(" ")
-                                .append(p.getY()).append(" ")
-                                .append(p.getR()).append(" ")
-                                .append(p.getV()).append(" ")
-                                .append(p.getTheta()).append("\n");
-
-                        // TODO: L and Rc are hardcoded
-                    }
-                    writer.write(sb.toString());
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                executor.submit(new Writer(i / animation_step, particles));
             }
+
             Map<Particle, List<Particle>> particles_neighbors = CIM.evaluate(particles, L, Rc); // TODO: L and Rc are hardcoded
             particles = nextFrame(particles_neighbors, L, noise); // TODO por ahora son todas vecinas
         }
     }
 
+    private record Writer(int frame, List<Particle> particles) implements Runnable {
+        @Override
+        public void run() {
+            final var sb = new StringBuilder();
+            try (final var writer = new BufferedWriter(
+                    new FileWriter("src/main/resources/time_slices/" + frame + ".txt"))) {
+
+                for (final var p : particles) {
+                    sb.append(p.getX()).append(" ")
+                            .append(p.getY()).append(" ")
+                            .append(p.getR()).append(" ")
+                            .append(p.getV()).append(" ")
+                            .append(p.getTheta()).append("\n");
+                }
+
+                writer.write(sb.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
