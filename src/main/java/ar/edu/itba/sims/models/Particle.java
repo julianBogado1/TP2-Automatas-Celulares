@@ -16,12 +16,14 @@ public class Particle {
     private double r;       //el radio de interaccion con otras particulas
     private double v;       //modulo de la velocidad
     private double theta;   //angulo de la velocidad en radianes
+    private Vector velocity;
     public Particle(double x, double y, double r, double v, double theta) {
         this.x = x;
         this.y = y;
         this.r = r;
         this.v = v;
         this.theta = theta;
+        this.velocity = Vector.fromPolar(v, theta);
     }
     public Particle() {}
 
@@ -137,7 +139,12 @@ public class Particle {
     public void setTheta(double theta) {
         this.theta = theta;
     }
-
+    public Vector getVelocity() {
+        return velocity;
+    }
+    public void setVelocity(Vector velocity) {
+        this.velocity = velocity;
+    }
     @Override
     public String toString() {
         return "Particle{" +

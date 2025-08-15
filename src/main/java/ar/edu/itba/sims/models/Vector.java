@@ -20,8 +20,9 @@ public class Vector {
     public double getAngle() {
         return Math.atan2(y, x);
     }
-    public Vector add(Vector other) {
-        return new Vector(this.x + other.x, this.y + other.y);
+    public void add(Vector other) {
+        this.x += other.x;
+        this.y += other.y;
     }
     public double getX() {
         return x;
