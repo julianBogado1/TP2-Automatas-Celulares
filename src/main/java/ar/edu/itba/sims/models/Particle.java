@@ -15,7 +15,7 @@ public class Particle {
     private double y;
     private double r;       //el radio de interaccion con otras particulas
     private double v;       //modulo de la velocidad
-    private double theta;   //angulo de la velocidad
+    private double theta;   //angulo de la velocidad en radianes
     public Particle(double x, double y, double r, double v, double theta) {
         this.x = x;
         this.y = y;
@@ -29,11 +29,11 @@ public class Particle {
         double sumSin = 0.0;
         double sumCos = 0.0;
         for (Particle p : particles) {
-            sumSin += Math.sin(Math.toRadians(p.getTheta()));
-            sumCos += Math.cos(Math.toRadians(p.getTheta()));
+            sumSin += Math.sin(p.getTheta());
+            sumCos += Math.cos(p.getTheta());
         }
-        System.out.println("SumSin: " + sumSin/ particles.size() + ", SumCos: " + sumCos/particles.size() + " Atan2: "+Math.atan2(sumSin/ particles.size(), sumCos/particles.size()));
-        return Math.toDegrees(Math.atan2(sumSin/ particles.size(), sumCos/particles.size()));
+//        System.out.println("SumSin: " + sumSin/ particles.size() + ", SumCos: " + sumCos/particles.size() + " Atan2: "+Math.atan2(sumSin/ particles.size(), sumCos/particles.size()));
+        return Math.atan2(sumSin/ particles.size(), sumCos/particles.size());
     }
 
     /**

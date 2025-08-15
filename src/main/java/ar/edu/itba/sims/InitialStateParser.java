@@ -30,10 +30,7 @@ public class InitialStateParser {
         }
     }
 
-    public static void buildInitialState(){
-        InitialConditions ic = InitialStateParser.parse("initial_conditions.json", InitialConditions.class);
-
-        //generate a list of particles with random x, y, theta
+    public static List<Particle> buildInitialState(InitialConditions ic){
         List<Particle> particles = new ArrayList<>();
         for(int i = 0; i < ic.getN(); i++){
             particles.add(new Particle(
@@ -41,20 +38,11 @@ public class InitialStateParser {
                 Math.random() * ic.getL(), //y
                 ic.getR(),                 //r
                 ic.getV(),                 //v
-                Math.random() * 360 //theta
+                Math.random() * 2 * Math.PI //theta
             ));
         }
 
-        //convert the list of particles to JSON
-        String json = gson.toJson(particles);
-        //write the JSON to a file
-        try {
-            File file = new File("src/main/resources/particles_t0.json");
-            file.createNewFile();
-            java.nio.file.Files.writeString(file.toPath(), json);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        return particles;
     }
 
 

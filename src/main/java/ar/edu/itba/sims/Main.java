@@ -2,6 +2,7 @@ package ar.edu.itba.sims;
 
 import ar.edu.itba.sims.models.Particle;
 import ar.edu.itba.sims.models.Vector;
+import ar.edu.itba.sims.neighbours.CIM;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -9,12 +10,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
-        InitialStateParser.buildInitialState();
 
-        List<Particle> particles = InitialStateParser.parseParticles("particles_t0.json");
+        InitialConditions ic = InitialStateParser.parse("initial_conditions.json", InitialConditions.class);
+        List<Particle> particles = InitialStateParser.buildInitialState(ic);
+
+        double L = ic.getL();
+        double Rc = ic.getR();
+        double noise = ic.getNoise();
 
         String directoryPath = "src/main/resources/time_slices";
         final File directory = new File(directoryPath);
@@ -43,6 +49,8 @@ public class Main {
                                 .append(p.getR()).append(" ")
                                 .append(p.getV()).append(" ")
                                 .append(p.getTheta()).append("\n");
+
+                         // TODO: L and Rc are hardcoded
                     }
                     writer.write(sb.toString());
 
@@ -50,37 +58,35 @@ public class Main {
                     e.printStackTrace();
                 }
             }
-
-            particles = nextFrame(particles, particles); // TODO por ahora son todas vecinas
+            Map<Particle, List<Particle>> particles_neighbors = CIM.evaluate(particles, L, Rc); // TODO: L and Rc are hardcoded
+            particles = nextFrame(particles_neighbors, L, noise); // TODO por ahora son todas vecinas
         }
 
     }
 
-    public static List<Particle> nextFrame(List<Particle> particles, List<Particle> neighbors) {
+    public static List<Particle> nextFrame(Map<Particle, List<Particle>> particles_neighbors, double L, double noise) {
 
         List<Particle> result = new ArrayList<>();
 
-        for (Particle p : particles) {
+        for (Map.Entry<Particle, List<Particle>> entry : particles_neighbors.entrySet()) {
             // POSITION
-            Vector velocity = Vector.fromPolar(p.getV(), Math.toRadians(p.getTheta()));
-            double newX = p.getX() + velocity.getX();
-            double newY = p.getY() + velocity.getY();
+            Vector velocity = Vector.fromPolar(entry.getKey().getV(), entry.getKey().getTheta());
+            double newX = entry.getKey().getX() + velocity.getX();
+            double newY = entry.getKey().getY() + velocity.getY();
 
             // Check boundaries
-            // TODO this L is fixed currently
-            double L = 100.0;
             if (newX < 0 || newX > L) {
-                newX = (newX + L) % L; // Wrap around horizontally
+                newX = Math.abs(newX + L) % L; // Wrap around horizontally
             }
             if (newY < 0 || newY > L) {
-                newY = (newY + L) % L; // Wrap around vertically
+                newY = Math.abs(newY + L) % L; // Wrap around vertically
             }
 
-            double noise = 2L; // noise amplitude
-            double newTheta = p.computeAvgTheta(neighbors) + (Math.random() - 0.5) * noise;
-            System.out.println("Old theta: " + p.getTheta() + ", New theta: " + newTheta);
+            double newTheta = entry.getKey().computeAvgTheta(entry.getValue());
+//            + (Math.random() - 0.5) * noise
+//            System.out.println("Old theta: " + entry.getKey().getTheta() + ", New theta: " + newTheta);
 
-            result.add(new Particle(newX, newY, p.getR(), p.getV(), newTheta));
+            result.add(new Particle(newX, newY, entry.getKey().getR(), entry.getKey().getV(), newTheta));
         }
         return result;
     }
