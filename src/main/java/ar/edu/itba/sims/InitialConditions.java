@@ -11,13 +11,15 @@ public class InitialConditions {
     private double l;
     private int n;      //amount of particles
     private double noise;
+    private int steps;
 
-    public InitialConditions(double r, double v, double L, int N, double noise) {
+    public InitialConditions(double r, double v, double L, int N, double noise, int steps) {
         this.r = r;
         this.v = v;
         this.l = L;
         this.n = N;
         this.noise = noise;
+        this.steps = steps;
     }
     public InitialConditions() {}
 
@@ -52,5 +54,7 @@ public class InitialConditions {
     public void setNoise(double noise) {
         this.noise = noise;
     }
+    public int getSteps(){return steps;}
+    public void setSteps(int steps){this.steps=steps;}
 
 }

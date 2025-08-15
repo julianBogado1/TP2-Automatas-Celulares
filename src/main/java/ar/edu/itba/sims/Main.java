@@ -21,46 +21,9 @@ public class Main {
         double L = ic.getL();
         double Rc = ic.getR();
         double noise = ic.getNoise();
+        int steps = ic.getSteps();
 
-        String directoryPath = "src/main/resources/time_slices";
-        final File directory = new File(directoryPath);
-        if (!directory.exists()) {
-            directory.mkdirs();
-        } else {
-            for (File file : directory.listFiles()) {
-                if (file.isFile()) {
-                    file.delete();
-                }
-            }
-        }
-
-        for (int i = 0; i < 100000; i++) {
-            // Only generate output every 1000 iterations
-            // TODO: make this configurable (could be named step)
-            final var animation_step = 5;
-            if (i % animation_step == 0) {
-                StringBuilder sb = new StringBuilder();
-                try (BufferedWriter writer = new BufferedWriter(
-                        new FileWriter(directoryPath + "/" + i / animation_step + ".txt"))) {
-
-                    for (Particle p : particles) {
-                        sb.append(p.getX()).append(" ")
-                                .append(p.getY()).append(" ")
-                                .append(p.getR()).append(" ")
-                                .append(p.getV()).append(" ")
-                                .append(p.getTheta()).append("\n");
-
-                         // TODO: L and Rc are hardcoded
-                    }
-                    writer.write(sb.toString());
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            Map<Particle, List<Particle>> particles_neighbors = CIM.evaluate(particles, L, Rc); // TODO: L and Rc are hardcoded
-            particles = nextFrame(particles_neighbors, L, noise); // TODO por ahora son todas vecinas
-        }
+        simulate(L, Rc, noise, steps, particles);
 
     }
 
@@ -88,6 +51,48 @@ public class Main {
             result.add(new Particle(newX, newY, entry.getKey().getR(), entry.getKey().getV(), newTheta));
         }
         return result;
+    }
+
+    public static void simulate(double L, double Rc, double noise, int steps, List<Particle> particles){
+        String directoryPath = "src/main/resources/time_slices";
+        final File directory = new File(directoryPath);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        } else {
+            for (File file : directory.listFiles()) {
+                if (file.isFile()) {
+                    file.delete();
+                }
+            }
+        }
+
+        for (int i = 0; i < steps; i++) {
+            // Only generate output every 1000 iterations
+            // TODO: make this configurable (could be named step)
+            final var animation_step = 5;
+            if (i % animation_step == 0) {
+                StringBuilder sb = new StringBuilder();
+                try (BufferedWriter writer = new BufferedWriter(
+                        new FileWriter(directoryPath + "/" + i / animation_step + ".txt"))) {
+
+                    for (Particle p : particles) {
+                        sb.append(p.getX()).append(" ")
+                                .append(p.getY()).append(" ")
+                                .append(p.getR()).append(" ")
+                                .append(p.getV()).append(" ")
+                                .append(p.getTheta()).append("\n");
+
+                        // TODO: L and Rc are hardcoded
+                    }
+                    writer.write(sb.toString());
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            Map<Particle, List<Particle>> particles_neighbors = CIM.evaluate(particles, L, Rc); // TODO: L and Rc are hardcoded
+            particles = nextFrame(particles_neighbors, L, noise); // TODO por ahora son todas vecinas
+        }
     }
 
 }

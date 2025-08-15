@@ -4,6 +4,7 @@
   "l": 100,
   "n": 10000,
   "noise": 0.1,
+  "steps": 10000,
   "show_animation": false,
-  "save_animation": false
+  "save_animation": true
 }
