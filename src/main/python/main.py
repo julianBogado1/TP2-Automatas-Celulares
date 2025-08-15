@@ -2,6 +2,7 @@ from particle import Particle as TParticle
 
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+from matplotlib.colors import Normalize
 
 import numpy as np
 
@@ -26,8 +27,13 @@ def main(length: float, count: int, show: bool, save: bool):
     q = ax.quiver(
         xdata, ydata, vxdata, vydata, angles,
         angles='xy', scale_units='xy', scale=4, cmap="brg",
+        norm=Normalize(vmin=0, vmax=2*np.pi),
         headwidth=40, headlength=60, headaxislength=50, minlength=0, pivot='middle'
     )
+
+    cbar = fig.colorbar(q, ax=ax, orientation='vertical', label='Angle (radians)')
+    cbar.set_ticks([0, np.pi/2, np.pi, 3*np.pi/2, 2*np.pi])
+    cbar.set_ticklabels([r'$0$', r'$\frac{\pi}{2}$', r'$\pi$', r'$\frac{3\pi}{2}$', r'$2\pi$'])
 
     def update(particles: list[TParticle]):
         xdata.clear()
