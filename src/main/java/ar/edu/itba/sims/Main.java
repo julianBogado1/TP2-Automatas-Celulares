@@ -34,7 +34,7 @@ public class Main {
             }
         }
 
-        for (int i = 0; i < 150; i++) {
+        for (int i = 0; i < 100000; i++) {
             // Only generate output every 1000 iterations
             // TODO: make this configurable (could be named step)
             final var animation_step = 5;
