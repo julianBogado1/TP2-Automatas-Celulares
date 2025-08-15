@@ -59,8 +59,6 @@ public class Main {
             result.add(new Particle(newX, newY, entry.getKey().getR(), entry.getKey().getV(), newTheta));
             
         }
-
-        double avgMagnitude = avgVelocity.getMagnitude() / (particles_neighbors.size() * v);
         return result;
     }
 
