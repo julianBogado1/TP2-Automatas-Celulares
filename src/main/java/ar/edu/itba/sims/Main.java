@@ -75,7 +75,7 @@ public class Main {
         final var orderPath = "src/main/resources/order_parameter";
         preparePath(orderPath, true);
 
-        final var filename = "%s/N-%d L-%d Ruido-%.2f ruido.txt".formatted(orderPath, particles.size(), L, noise);
+        final var filename = "%s/N-%d L-%d Ruido-%.2f.txt".formatted(orderPath, particles.size(), L, noise);
         final var orderWriter = new BufferedWriter(new FileWriter(filename));
 
         final var animation_step = 5;
