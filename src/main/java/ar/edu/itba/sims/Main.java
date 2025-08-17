@@ -96,6 +96,7 @@ public class Main {
         }
 
         orderWriter.close();
+        executor.shutdown();
     }
 
     private record Animator(int frame, double v, List<Particle> particles) implements Runnable {
