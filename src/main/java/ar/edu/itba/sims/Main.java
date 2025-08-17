@@ -52,11 +52,11 @@ public class Main {
         return result;
     }
 
-    private static void preparePath(String path) {
+    private static void preparePath(String path, boolean preserve) {
         final File directory = new File(path);
         if (!directory.exists()) {
             directory.mkdirs();
-        } else {
+        } else if (!preserve) {
             for (File file : directory.listFiles()) {
                 if (file.isFile()) {
                     file.delete();
@@ -70,10 +70,10 @@ public class Main {
         final var executor = Executors.newFixedThreadPool(3);
 
         final var directoryPath = "src/main/resources/time_slices";
-        preparePath(directoryPath);
+        preparePath(directoryPath, false);
 
         final var orderPath = "src/main/resources/order_parameter";
-        preparePath(orderPath);
+        preparePath(orderPath, true);
 
         final var filename = "%s/%d Particulas con %.2f ruido.txt".formatted(orderPath, particles.size(), noise);
         final var orderWriter = new BufferedWriter(new FileWriter(filename));
