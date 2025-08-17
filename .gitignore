@@ -170,6 +170,7 @@ cython_debug/
 .DS_Store
 
 **/time_slices/
+**/order_parameter/
 **/animations/*.gif
 **/animations/*.mp4
 
