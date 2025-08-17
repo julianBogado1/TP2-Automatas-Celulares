@@ -25,7 +25,8 @@ public abstract class CIM {
      * @param particles List of particles to evaluate
      * @param L         Length of the simulation box
      * @param Rc        Interaction radius
-     * @return A map where each key is a particle and the value is a list of particles that interact with it.
+     * @return A map where each key is a particle and the value is a list of
+     *         particles that interact with it.
      */
     public static Map<Particle, List<Particle>> evaluate(final List<Particle> particles, double L, double Rc) {
         if (executor.isShutdown()) {
@@ -40,8 +41,8 @@ public abstract class CIM {
         final var result = new ConcurrentHashMap<Particle, List<Particle>>();
 
         for (final var p : particles) {
-            int i = (int) (p.getX() / Rc);
-            int j = (int) (p.getY() / Rc);
+            var i = (int) (p.getX() / Rc);
+            var j = (int) (p.getY() / Rc);
             matrix.get(i, j).add(p);
 
             final var neighbours = new LinkedList<Particle>();
