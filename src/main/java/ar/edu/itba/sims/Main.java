@@ -78,9 +78,14 @@ public class Main {
         final var orderWriter = new BufferedWriter(new FileWriter(orderPath + "/order_parameter.txt"));
 
         final var animation_step = 5;
+        final var progress_step = steps / 10;
         for (int i = 0; i < steps; i++) {
             if (i % animation_step == 0) {
                 executor.submit(new Animator(i / animation_step, v, particles));
+            }
+
+            if (i % progress_step == 0) {
+                System.out.println("Progress: " + (i * 100 / steps) + "%");
             }
 
             final var avgVelocity = new Vector(0, 0);
