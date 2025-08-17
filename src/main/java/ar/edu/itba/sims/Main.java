@@ -15,7 +15,6 @@ import java.util.concurrent.Executors;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-
         InitialConditions ic = InitialStateParser.parse("initial_conditions.json", InitialConditions.class);
         List<Particle> particles = InitialStateParser.buildInitialState(ic);
 
@@ -25,18 +24,15 @@ public class Main {
         int steps = ic.getSteps();
         double v = ic.getV();
         simulate(L, Rc, noise, steps, v, particles);
-
     }
 
-    public static List<Particle> nextFrame(Map<Particle, List<Particle>> particles_neighbors, double L, double noise, double v) {
+    public static List<Particle> nextFrame(Map<Particle, List<Particle>> particles_neighbors, double L, double noise,
+            double v) {
 
         List<Particle> result = new ArrayList<>();
-        
-
 
         for (Map.Entry<Particle, List<Particle>> entry : particles_neighbors.entrySet()) {
-            
-            //================== POSITION ====================
+            // ================== POSITION ====================
             Vector velocity = entry.getKey().getVelocity();
             double newX = entry.getKey().getX() + velocity.getX();
             double newY = entry.getKey().getY() + velocity.getY();
@@ -49,16 +45,14 @@ public class Main {
                 newY = Math.abs(newY + L) % L; // Wrap around vertically
             }
 
-            double newTheta = entry.getKey().computeAvgTheta(entry.getValue())+ (Math.random() - 0.5) * noise;
+            double newTheta = entry.getKey().computeAvgTheta(entry.getValue()) + (Math.random() - 0.5) * noise;
 
             result.add(new Particle(newX, newY, entry.getKey().getR(), entry.getKey().getV(), newTheta));
-            
         }
         return result;
     }
 
-
-    private static void preparePath(String path){
+    private static void preparePath(String path) {
         final File directory = new File(path);
         if (!directory.exists()) {
             directory.mkdirs();
@@ -71,7 +65,8 @@ public class Main {
         }
     }
 
-    public static void simulate(double L, double Rc, double noise, int steps, double v, List<Particle> particles) throws IOException {
+    public static void simulate(double L, double Rc, double noise, int steps, double v, List<Particle> particles)
+            throws IOException {
         final var executor = Executors.newFixedThreadPool(6);
 
         final var directoryPath = "src/main/resources/time_slices";
@@ -80,7 +75,7 @@ public class Main {
         final var orderPath = "src/main/resources/order_parameter";
         preparePath(orderPath);
 
-        final var orderWriter = new BufferedWriter(new FileWriter( orderPath+"/order_parameter.txt"));
+        final var orderWriter = new BufferedWriter(new FileWriter(orderPath + "/order_parameter.txt"));
 
         final var animation_step = 5;
         for (int i = 0; i < steps; i++) {
@@ -97,7 +92,7 @@ public class Main {
             orderWriter.write(orden + "\n");
 
             final var particles_neighbors = CIM.evaluate(particles, L, Rc);
-            particles = nextFrame(particles_neighbors, L, noise,v);
+            particles = nextFrame(particles_neighbors, L, noise, v);
         }
 
         orderWriter.close();
