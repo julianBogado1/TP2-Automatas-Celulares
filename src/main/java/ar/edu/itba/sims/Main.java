@@ -14,11 +14,6 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 
 public class Main {
-
-    static Vector avgVelocity = new Vector(0, 0);
-    static double orden = 0;
-
-
     public static void main(String[] args) throws IOException {
 
         InitialConditions ic = InitialStateParser.parse("initial_conditions.json", InitialConditions.class);
@@ -77,52 +72,57 @@ public class Main {
     }
 
     public static void simulate(double L, double Rc, double noise, int steps, double v, List<Particle> particles) throws IOException {
-        String directoryPath = "src/main/resources/time_slices";
+        final var executor = Executors.newFixedThreadPool(6);
+
+        final var directoryPath = "src/main/resources/time_slices";
         preparePath(directoryPath);
 
-        String orderPath = "src/main/resources/order_parameter";
+        final var orderPath = "src/main/resources/order_parameter";
         preparePath(orderPath);
 
-        StringBuilder orderBuilder = new StringBuilder();
-        BufferedWriter orderWriter = new BufferedWriter(new FileWriter( orderPath+"/order_parameter.txt"));
+        final var orderWriter = new BufferedWriter(new FileWriter( orderPath+"/order_parameter.txt"));
 
+        final var animation_step = 5;
         for (int i = 0; i < steps; i++) {
-
-            final var animation_step = 5;
             if (i % animation_step == 0) {
-                StringBuilder sb = new StringBuilder();
-                BufferedWriter writer = new BufferedWriter(
-                        new FileWriter(directoryPath + "/" + i / animation_step + ".txt"));
-
-                    for (Particle p : particles) {
-
-                        //================= OUTPUT ===================
-                        sb.append(p.getX()).append(" ")
-                                .append(p.getY()).append(" ")
-                                .append(p.getR()).append(" ")
-                                .append(p.getV()).append(" ")
-                                .append(p.getTheta()).append("\n");
-
-
-                        //================= ORDER PARAMETER ===================
-                        avgVelocity.add(p.getVelocity());
-                    }
-
-                    //================= ORDER PARAMETER ===================
-                    orden = avgVelocity.getMagnitude() / (particles.size() * v);
-                    orderBuilder.append(orden+"\n");
-                    avgVelocity = new Vector(0, 0); // reset for next iteration
-
-                    writer.write(sb.toString());
+                executor.submit(new Animator(i / animation_step, v, particles));
             }
-            Map<Particle, List<Particle>> particles_neighbors = CIM.evaluate(particles, L, Rc); // TODO: L and Rc are hardcoded
-            particles = nextFrame(particles_neighbors, L, noise,v); // TODO por ahora son todas vecinas
+
+            final var avgVelocity = new Vector(0, 0);
+            for (final var p : particles) {
+                avgVelocity.add(p.getVelocity());
+            }
+
+            final var orden = avgVelocity.getMagnitude() / (particles.size() * v);
+            orderWriter.write(orden + "\n");
+
+            final var particles_neighbors = CIM.evaluate(particles, L, Rc);
+            particles = nextFrame(particles_neighbors, L, noise,v);
         }
 
-        orderWriter.write(orderBuilder.toString());
         orderWriter.close();
-        
-
     }
 
+    private record Animator(int frame, double v, List<Particle> particles) implements Runnable {
+        @Override
+        public void run() {
+            final var sb = new StringBuilder();
+            final var path = "src/main/resources/time_slices/" + frame + ".txt";
+
+            try (final var writer = new BufferedWriter(new FileWriter(path))) {
+                for (final var p : particles) {
+                    sb.append(p.getX()).append(" ")
+                            .append(p.getY()).append(" ")
+                            .append(p.getR()).append(" ")
+                            .append(p.getV()).append(" ")
+                            .append(p.getTheta()).append("\n");
+
+                    writer.write(sb.toString());
+                    sb.setLength(0); // Clear the StringBuilder for the next particle
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
