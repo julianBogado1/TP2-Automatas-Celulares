@@ -67,7 +67,7 @@ public class Main {
 
     public static void simulate(double L, double Rc, double noise, int steps, double v, List<Particle> particles)
             throws IOException {
-        final var executor = Executors.newFixedThreadPool(6);
+        final var executor = Executors.newFixedThreadPool(3);
 
         final var directoryPath = "src/main/resources/time_slices";
         preparePath(directoryPath);
@@ -103,6 +103,7 @@ public class Main {
 
         orderWriter.close();
         executor.shutdown();
+        CIM.shutdown();
     }
 
     private record Animator(int frame, double v, List<Particle> particles) implements Runnable {
