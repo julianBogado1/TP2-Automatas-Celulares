@@ -110,7 +110,7 @@ public class Main {
         final var progress_step = steps / 10;
         for (int i = resume; i < steps; i++) {
             if (i % animation_step == 0) {
-                executor.submit(new Animator(i / animation_step, v, particles));
+                executor.submit(new Animator(i / animation_step, particles));
             }
 
             if (i % progress_step == 0) {
@@ -137,7 +137,7 @@ public class Main {
         CIM.shutdown();
     }
 
-    private record Animator(int frame, double v, List<Particle> particles) implements Runnable {
+    private record Animator(int frame, List<Particle> particles) implements Runnable {
         @Override
         public void run() {
             final var sb = new StringBuilder();
