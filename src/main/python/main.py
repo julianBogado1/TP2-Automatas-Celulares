@@ -84,7 +84,7 @@ def main(length: float, count: int, show: bool, save: bool):
 
         filename = path("animations", f"particles_{int(time.time())}.mp4")
         with tqdm(total=frames.count()) as sbar:
-            callback = lambda _i, _n: sbar.update(1)
+            callback = lambda _i, _n: sbar.update()
             ani.save(filename, writer='ffmpeg', fps=60, progress_callback=callback)
 
         print(f"Animation saved at {filename}.")
