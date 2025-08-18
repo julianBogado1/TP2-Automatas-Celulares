@@ -95,7 +95,7 @@ public class Main {
             }
 
             final var orden = avgVelocity.getMagnitude() / (particles.size() * v);
-            orderWriter.write(orden + "\n");
+            orderWriter.write(String.format(Locale.ROOT, "%.16f\n", orden));
 
             final var particles_neighbors = CIM.evaluate(particles, L, Rc);
             particles = nextFrame(particles_neighbors, L, noise, v);
