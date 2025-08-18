@@ -6,6 +6,8 @@ from matplotlib.colors import Normalize
 
 import numpy as np
 
+from tqdm import tqdm
+
 import time
 
 import sys
@@ -14,7 +16,10 @@ import frames
 from resources import config, path
 from streaming import SequentialStreamingExecutor as Executor
 
+abar = None
 def main(length: float, count: int, show: bool, save: bool):
+    global abar
+
     executor = Executor(frames.next, frames.count())
 
     fig, ax = plt.subplots()
@@ -36,6 +41,8 @@ def main(length: float, count: int, show: bool, save: bool):
     cbar.set_ticklabels([r'$0$', r'$\frac{\pi}{2}$', r'$\pi$', r'$\frac{3\pi}{2}$', r'$2\pi$'])
 
     def update(particles: list[TParticle]):
+        global abar
+
         xdata.clear()
         ydata.clear()
         vxdata.clear()
@@ -52,6 +59,9 @@ def main(length: float, count: int, show: bool, save: bool):
         q.set_offsets(np.c_[xdata, ydata])
         q.set_UVC(vxdata, vydata, angles)
 
+        if abar is not None:
+            abar.update()
+
         return q,
 
     ani = FuncAnimation(
@@ -65,12 +75,18 @@ def main(length: float, count: int, show: bool, save: bool):
     )
 
     if show:
+        abar = tqdm(total=frames.count())
         plt.show()
+        abar.close()
 
     if save:
         print("Saving animation...")
+
         filename = path("animations", f"particles_{int(time.time())}.mp4")
-        ani.save(filename, writer='ffmpeg', fps=60)
+        with tqdm(total=frames.count()) as sbar:
+            callback = lambda _i, _n: sbar.update(1)
+            ani.save(filename, writer='ffmpeg', fps=60, progress_callback=callback)
+
         print(f"Animation saved at {filename}.")
 
     executor.close()
