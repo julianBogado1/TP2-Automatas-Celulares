@@ -27,6 +27,10 @@ public class Particle {
     }
     public Particle() {}
 
+    public Particle(double ...args) {
+        this(args[0], args[1], args[2], args[3], args[4]);
+    }
+
     public double computeAvgTheta(List<Particle> particles) {
         double sumSin = 0.0;
         double sumCos = 0.0;
