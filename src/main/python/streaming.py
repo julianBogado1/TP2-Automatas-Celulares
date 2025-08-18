@@ -55,6 +55,6 @@ class SequentialStreamingExecutor[T]:
                 yield result
 
     def close(self):
-        self.manager.shutdown()
         self.pool.join()
+        self.manager.shutdown()
         # print("StreamingExecutor closed.")
