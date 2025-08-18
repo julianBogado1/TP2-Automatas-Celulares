@@ -2,11 +2,14 @@ import matplotlib.pyplot as plt
 
 import os
 
+import sys
+
 from resources import path
 
 folder = path('order_parameter')
 
-for filename in os.listdir(folder):
+sources = sys.argv[1:] if len(sys.argv) > 1 else os.listdir(folder)
+for filename in sources:
     filepath = os.path.join(folder, filename)
 
     if not os.path.isfile(filepath):
