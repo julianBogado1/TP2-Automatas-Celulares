@@ -102,4 +102,8 @@ if __name__ == "__main__":
         print("Otherwise, this program is useless.")
         sys.exit(0)
 
-    main(settings['l'], settings['n'], settings['show_animation'], settings['save_animation'])
+    try:
+        main(settings['l'], settings['n'], settings['show_animation'], settings['save_animation'])
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        sys.exit(1)
