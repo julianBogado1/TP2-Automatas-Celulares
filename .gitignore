@@ -166,6 +166,7 @@ cython_debug/
 .vscode/
 
 *.class
+*.zip
 
 .DS_Store
 
