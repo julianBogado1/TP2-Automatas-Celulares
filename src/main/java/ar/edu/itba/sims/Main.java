@@ -80,15 +80,20 @@ public class Main {
 
     public static void simulate(double L, double Rc, double noise, int steps, double v, List<Particle> particles, int resume)
             throws IOException {
+        final var orderPath = "src/main/resources/order_parameter";
+        preparePath(orderPath, true);
+        final var filename = "%s/N-%d L-%.2f Ruido-%.2f.txt".formatted(orderPath, particles.size(), L, noise);
+        simulate(L, Rc, noise, steps, v, particles, resume, filename);
+    }
+
+    public static void simulate(double L, double Rc, double noise, int steps, double v, List<Particle> particles, int resume, String orderParameterFile)
+            throws IOException {
         final var executor = Executors.newFixedThreadPool(3);
 
         final var directoryPath = "src/main/resources/time_slices";
         preparePath(directoryPath, resume != 0);
 
-        final var orderPath = "src/main/resources/order_parameter";
-        preparePath(orderPath, true);
-
-        final var filename = "%s/N-%d L-%.2f Ruido-%.2f.txt".formatted(orderPath, particles.size(), L, noise);
+        final var filename = orderParameterFile;
 
         // Truncate the file to resume
         try (final var stream = new FileOutputStream(filename, true)) {
