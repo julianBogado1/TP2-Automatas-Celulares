@@ -43,6 +43,9 @@ def main(length: float, count: int, show: bool, save: bool):
     def update(particles: list[TParticle]):
         global abar
 
+        if abar is not None and abar.n % abar.total == 0:
+            abar.reset()
+
         xdata.clear()
         ydata.clear()
         vxdata.clear()
