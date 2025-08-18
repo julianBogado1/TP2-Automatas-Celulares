@@ -1,10 +1,12 @@
 package ar.edu.itba.sims;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ar.edu.itba.sims.models.Particle;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,19 +43,23 @@ public class InitialStateParser {
         return particles;
     }
 
-
-    public static List<Particle> parseParticles(String resourceName) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.readValue(
-                    new File("src/main/resources/" + resourceName),
-                    new TypeReference<List<Particle>>() {}
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+    public static List<Particle> parseParticles(int step) throws IOException {
+        final var particles = new ArrayList<Particle>();
+    
+        try (final var br = new BufferedReader(new FileReader("src/main/resources/time_slices/" + step + ".txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                final var tokens = line.trim().split("\\s+");
+                final var values = new double[tokens.length];
+    
+                for (int i = 0; i < tokens.length; i++) {
+                    values[i] = Double.parseDouble(tokens[i]);
+                }
+    
+                particles.add(new Particle(values));
+            }
         }
+    
+        return particles;
     }
-
-
 }
