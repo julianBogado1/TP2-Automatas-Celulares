@@ -53,9 +53,9 @@ public class Observables {
     private void v_a(final ExecutorService executor, final File[] files) {
         final var ic = InitialStateParser.parse("initial_conditions.json", InitialConditions.class);
         final var v = ic.getV();
-        
+
         final var output = new ConcurrentHashMap<Integer, Double>(files.length + 1, 1.0f);
-        
+
         final var latch = new CountDownLatch(files.length);
         for (final var file : files) {
             if (file.isFile()) {
@@ -63,12 +63,12 @@ public class Observables {
                     try {
                         final var step = Integer.parseInt(file.getName().replace(".txt", ""));
                         final var particles = InitialStateParser.parseParticles(step);
-    
+
                         final var avg = new Vector(0, 0);
                         for (final var p : particles) {
                             avg.add(p.getVelocity());
                         }
-    
+
                         final var orden = avg.getMagnitude() / (particles.size() * v);
                         output.put(step, orden);
                     } catch (Exception e) {
