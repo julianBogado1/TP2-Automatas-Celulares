@@ -6,12 +6,10 @@ import ar.edu.itba.sims.neighbours.CIM;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Executors;
 
@@ -85,21 +83,6 @@ public class Main {
         final var directoryPath = "src/main/resources/time_slices";
         preparePath(directoryPath, resume != 0);
 
-        final var orderPath = "src/main/resources/order_parameter";
-        preparePath(orderPath, true);
-
-        final var filename = "%s/N-%d L-%.2f Ruido-%.2f.txt".formatted(orderPath, particles.size(), L, noise);
-
-        // Truncate the file to resume
-        try (final var stream = new FileOutputStream(filename, true)) {
-            stream.getChannel().truncate(resume * 19L); // Each number is 19 chars long
-        } catch (IOException e) {
-            System.err.println("Error resuming simulation: " + e.getMessage());
-            return;
-        }
-
-        final var orderWriter = new BufferedWriter(new FileWriter(filename, true));
-
         // Resuming with the info from the previous step
         if (resume > 0) {
             final var particles_neighbors = CIM.evaluate(particles, L, Rc);
@@ -117,14 +100,6 @@ public class Main {
                 System.out.println("Progress: " + (i * 100 / steps) + "%");
             }
 
-            final var avgVelocity = new Vector(0, 0);
-            for (final var p : particles) {
-                avgVelocity.add(p.getVelocity());
-            }
-
-            final var orden = avgVelocity.getMagnitude() / (particles.size() * v);
-            orderWriter.write(String.format(Locale.ROOT, "%.16f\n", orden));
-
             // If not the last step, calculate the next frame
             if (i + 1 != steps) {
                 final var particles_neighbors = CIM.evaluate(particles, L, Rc);
@@ -132,7 +107,6 @@ public class Main {
             }
         }
 
-        orderWriter.close();
         executor.shutdown();
         CIM.shutdown();
     }
