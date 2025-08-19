@@ -43,6 +43,9 @@ def main(length: float, count: int, show: bool, save: bool):
     def update(particles: list[TParticle]):
         global abar
 
+        if abar is not None and abar.n % abar.total == 0:
+            abar.reset()
+
         xdata.clear()
         ydata.clear()
         vxdata.clear()
@@ -84,7 +87,7 @@ def main(length: float, count: int, show: bool, save: bool):
 
         filename = path("animations", f"particles_{int(time.time())}.mp4")
         with tqdm(total=frames.count()) as sbar:
-            callback = lambda _i, _n: sbar.update(1)
+            callback = lambda _i, _n: sbar.update()
             ani.save(filename, writer='ffmpeg', fps=60, progress_callback=callback)
 
         print(f"Animation saved at {filename}.")
@@ -99,4 +102,8 @@ if __name__ == "__main__":
         print("Otherwise, this program is useless.")
         sys.exit(0)
 
-    main(settings['l'], settings['n'], settings['show_animation'], settings['save_animation'])
+    try:
+        main(settings['l'], settings['n'], settings['show_animation'], settings['save_animation'])
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        sys.exit(1)

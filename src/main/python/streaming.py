@@ -25,9 +25,13 @@ class SequentialStreamingExecutor[T]:
         def done(result: tuple[int, T]):
             task_id, output = result
             # print(f"Item {task_id} done")
-            with self.condition:
-                self.shared_dict[task_id] = output
-                self.condition.notify_all()
+            try:
+                with self.condition:
+                    self.shared_dict[task_id] = output
+                    self.condition.notify_all()
+            except EOFError:
+                # Closed semaphore
+                pass
 
         for task_id in range(self.count):
             self.pool.apply_async(
@@ -46,15 +50,19 @@ class SequentialStreamingExecutor[T]:
         """
         next_id = 0
         while next_id < self.count:
-            with self.condition:
-                # print(f"Waiting for item {next_id}")
-                self.condition.wait_for(lambda: next_id in self.shared_dict)
-                result = self.shared_dict.pop(next_id)
-                # print(f"Item {next_id} consumed")
-                next_id += 1
-                yield result
+            try:
+                with self.condition:
+                    # print(f"Waiting for item {next_id}")
+                    self.condition.wait_for(lambda: next_id in self.shared_dict)
+                    result = self.shared_dict.pop(next_id)
+                    # print(f"Item {next_id} consumed")
+                    next_id += 1
+                    yield result
+            except FileNotFoundError:
+                # If the pool is closed, we stop yielding results
+                break
 
     def close(self):
-        self.pool.join()
+        self.pool.terminate()
         self.manager.shutdown()
         # print("StreamingExecutor closed.")
