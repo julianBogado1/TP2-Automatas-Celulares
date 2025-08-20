@@ -37,7 +37,7 @@ public class Main {
         simulate(L, Rc, noise, steps, v, particles, resume);
     }
 
-    public static List<Particle> nextFrame(Map<Particle, List<Particle>> particles_neighbors, double L, double noise,
+    public static List<Particle> nextFrameAverage(Map<Particle, List<Particle>> particles_neighbors, double L, double noise,
             double v) {
 
         List<Particle> result = new ArrayList<>();
@@ -86,7 +86,7 @@ public class Main {
         // Resuming with the info from the previous step
         if (resume > 0) {
             final var particles_neighbors = CIM.evaluate(particles, L, Rc);
-            particles = nextFrame(particles_neighbors, L, noise, v);
+            particles = nextFrameAverage(particles_neighbors, L, noise, v);
         }
 
         final var animation_step = 5;
@@ -104,7 +104,7 @@ public class Main {
             // If not the last step, calculate the next frame
             if (i + 1 != steps) {
                 final var particles_neighbors = CIM.evaluate(particles, L, Rc);
-                particles = nextFrame(particles_neighbors, L, noise, v);
+                particles = nextFrameAverage(particles_neighbors, L, noise, v);
             }
         }
 
