@@ -1,17 +1,13 @@
 package ar.edu.itba.sims;
 
 import ar.edu.itba.sims.models.Particle;
-import ar.edu.itba.sims.models.Vector;
 import ar.edu.itba.sims.neighbours.CIM;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.Executors;
 
 public class Main {
@@ -31,75 +27,13 @@ public class Main {
             particles = InitialStateParser.buildInitialState(ic);
         }
 
-        final var simulator = Map.<String, Simulator>of(
-                "average", Main::nextFrameAverage,
-                "voter", Main::nextFrameVoter).get(ic.getInteraction());
-
-        if (simulator == null) {
-            throw new IllegalArgumentException("Unknown interaction type: " + ic.getInteraction());
-        }
-
         double L = ic.getL();
         double Rc = ic.getR();
         double noise = ic.getNoise();
         int steps = ic.getSteps();
         double v = ic.getV();
-        simulate(simulator, L, Rc, noise, steps, v, particles, resume);
-    }
-
-    public static List<Particle> nextFrameAverage(Map<Particle, List<Particle>> particles_neighbors, double L,
-            double noise, double v) {
-
-        List<Particle> result = new ArrayList<>();
-
-        for (Map.Entry<Particle, List<Particle>> entry : particles_neighbors.entrySet()) {
-            // ================== POSITION ====================
-            Vector velocity = entry.getKey().getVelocity();
-            double newX = entry.getKey().getX() + velocity.getX();
-            double newY = entry.getKey().getY() + velocity.getY();
-
-            // Check boundaries
-            if (newX < 0 || newX > L) {
-                newX = Math.abs(newX + L) % L; // Wrap around horizontally
-            }
-            if (newY < 0 || newY > L) {
-                newY = Math.abs(newY + L) % L; // Wrap around vertically
-            }
-
-            double newTheta = entry.getKey().computeAvgTheta(entry.getValue()) + (Math.random() - 0.5) * noise;
-
-            result.add(new Particle(newX, newY, entry.getKey().getR(), entry.getKey().getV(), newTheta));
-        }
-        return result;
-    }
-
-    public static List<Particle> nextFrameVoter(Map<Particle, List<Particle>> particles_neighbors, double L,
-            double noise, double v) {
-        final var random = new Random();
-
-        final List<Particle> result = new ArrayList<>(particles_neighbors.size());
-
-        for (final var entry : particles_neighbors.entrySet()) {
-            var velocity = entry.getKey().getVelocity();
-            var newX = entry.getKey().getX() + velocity.getX();
-            var newY = entry.getKey().getY() + velocity.getY();
-
-            // Check boundaries
-            if (newX < 0 || newX > L) {
-                newX = Math.abs(newX + L) % L; // Wrap around horizontally
-            }
-            if (newY < 0 || newY > L) {
-                newY = Math.abs(newY + L) % L; // Wrap around vertically
-            }
-
-            final var neighbours = entry.getValue();
-            final var newTheta = neighbours.get(random.nextInt(neighbours.size())).getTheta()
-                    + (Math.random() - 0.5) * noise;
-
-            result.add(new Particle(newX, newY, entry.getKey().getR(), entry.getKey().getV(), newTheta));
-        }
-
-        return result;
+        final var interaction = ic.getInteraction();
+        simulate(new Simulator(particles, L, Rc, noise, v, resume, steps, interaction), resume > 0);
     }
 
     private static void preparePath(String path, boolean preserve) {
@@ -115,36 +49,32 @@ public class Main {
         }
     }
 
-    public static void simulate(Simulator simulator, double L, double Rc, double noise, int steps, double v,
-            List<Particle> particles, int resume) throws IOException {
+    public static void simulate(final Simulator simulator, final boolean resume) throws IOException {
         final var executor = Executors.newFixedThreadPool(3);
 
         final var directoryPath = "src/main/resources/time_slices";
-        preparePath(directoryPath, resume != 0);
+        preparePath(directoryPath, resume);
 
-        // Resuming with the info from the previous step
-        if (resume > 0) {
-            final var particles_neighbors = CIM.evaluate(particles, L, Rc);
-            particles = simulator.next(particles_neighbors, L, noise, v);
+        final var iterator = simulator.iterator();
+
+        // Save the initial state
+        if (!resume) {
+            executor.submit(new Animator(0, simulator.getInitialParticles()));
         }
 
         final var animation_step = 5;
-        final var progress_step = Math.max(1, steps / 10);
-        for (int i = resume; i < steps; i++) {
-            // Skip animation output for parameter study (performance improvement)
+        // final var progress_step = Math.max(1, steps / 10);
+        while (iterator.hasNext()) {
+            final var iteration = iterator.next();
+            final var i = iteration.step();
+
             if (i % animation_step == 0) {
-                executor.submit(new Animator(i / animation_step, particles));
+                executor.submit(new Animator(i / animation_step, iteration.particles()));
             }
 
-            if (i % progress_step == 0) {
-                System.out.println("Progress: " + (i * 100 / steps) + "%");
-            }
-
-            // If not the last step, calculate the next frame
-            if (i + 1 != steps) {
-                final var particles_neighbors = CIM.evaluate(particles, L, Rc);
-                particles = simulator.next(particles_neighbors, L, noise, v);
-            }
+            // if (i % progress_step == 0) {
+            //     System.out.println("Progress: " + (i * 100 / steps) + "%");
+            // }
         }
 
         executor.shutdown();
@@ -172,10 +102,5 @@ public class Main {
                 e.printStackTrace();
             }
         }
-    }
-
-    private interface Simulator {
-        List<Particle> next(final Map<Particle, List<Particle>> particles_neighbors, final double L, final double noise,
-                final double v);
     }
 }
