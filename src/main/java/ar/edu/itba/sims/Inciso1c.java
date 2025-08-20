@@ -93,12 +93,8 @@ public class Inciso1c {
         }
     }
     
-    private static void runSingleSimulation(InitialConditions config, List<Particle> particles, String outputDir) throws IOException {
-        String orderFile = String.format("%s/order_parameter/N-%d_L-%.2f_Ruido-%.2f.txt", 
-            outputDir, config.getN(), config.getL(), config.getNoise());
-        
-        Main.simulate(config.getL(), config.getR(), config.getNoise(), 
-                     config.getSteps(), config.getV(), particles, 0, orderFile);
+    private static void runSingleSimulation(InitialConditions config, List<Particle> particles, String outputDir) throws IOException {        
+        Main.simulate(config.getL(), config.getR(), config.getNoise(), config.getSteps(), config.getV(), particles, 0);
     }
     
     private static void saveConfig(InitialConditions config, String path) throws IOException {
