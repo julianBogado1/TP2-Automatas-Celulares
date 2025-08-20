@@ -13,6 +13,8 @@ import subprocess
 import sys
 import os
 import time
+import glob
+import resources as ittybittypatch
 from pathlib import Path
 
 def print_section(title):
@@ -73,33 +75,87 @@ def compile_java_project():
     print("✓ Java project compiled successfully")
     return True
 
-def run_parameter_sweep():
-    """Run the Java parameter sweep study."""
-    print_section("RUNNING PARAMETER SWEEP SIMULATIONS")
-    
+def get_all_config_files():
+    """Get all config files from both eta_study and rho_study directories."""
     project_root = Path(__file__).parent.parent.parent.parent
-    print(f"Parameter sweep project root: {project_root}")
+    config_files = []
     
-    print("Starting parameter sweep (this may take several minutes)...")
-    print("Progress will be shown for each parameter value...")
+    # Get eta_study config files
+    eta_configs = glob.glob(str("../../../results/eta_study/configs/*.json"))
+    config_files.extend(eta_configs)
+    
+    # Get rho_study config files  
+    rho_configs = glob.glob(str(project_root / "../../../results/rho_study/configs/*.json"))
+    config_files.extend(rho_configs)
+    
+    return config_files
+
+def run_single_simulation(config_file):
+    """Run main and observables for a single config file."""
+    project_root = Path(__file__).parent.parent.parent.parent
+    config_path = os.path.relpath(config_file, start=ittybittypatch.path())
+    
+    print(f"Processing config: {os.path.basename(config_file)}")
+    
+    # Run main simulation
+    main_success = run_command([
+        "mvn.cmd", "exec:java",
+        "-Dexec.mainClass=ar.edu.itba.sims.Main",
+        f"-Dinput={config_path}",
+        "-Dexec.cleanupDaemonThreads=true"
+    ], f"Main simulation for {os.path.basename(config_file)}", cwd=project_root)
+    
+    if not main_success:
+        print(f"Failed to run main simulation for {config_file}")
+        return False
+    
+    print(f"✓ Main simulation completed for {os.path.basename(config_file)}");
+    
+    # Run observables (expects "v_a" as first argument)
+    observables_success = run_command([
+        "mvn.cmd", "exec:java", 
+        "-Dexec.mainClass=ar.edu.itba.sims.Observables",
+        "-Dexec.args=v_a",
+        "-Dexec.cleanupDaemonThreads=true"
+    ], f"Observables for {os.path.basename(config_file)}", cwd=project_root)
+    
+    if not observables_success:
+        print(f"Failed to run observables for {config_file}")
+        return False
+    
+    print(f"✓ Completed processing {os.path.basename(config_file)}")
+    return True
+
+def run_parameter_sweep():
+    """Run simulations for all existing config files."""
+    print_section("RUNNING SIMULATIONS FOR ALL CONFIG FILES")
+    
+    config_files = get_all_config_files()
+    
+    if not config_files:
+        print("No config files found in results/eta_study/configs or results/rho_study/configs")
+        return False
+    
+    print(f"Found {len(config_files)} config files to process")
+    print("Starting simulations (this may take several minutes)...")
     
     start_time = time.time()
+    successful_runs = 0
     
-    success = run_command([
-        "mvn.cmd", "exec:java",
-        "-Dexec.mainClass=ar.edu.itba.sims.Inciso1c",
-        "-Dexec.cleanupDaemonThreads=false"
-    ], "Parameter sweep simulations", cwd=project_root)
+    for i, config_file in enumerate(config_files, 1):
+        print(f"\n--- Processing {i}/{len(config_files)} ---")
+        if run_single_simulation(config_file):
+            successful_runs += 1
+        else:
+            print(f"Skipping remaining steps for {config_file}")
     
     end_time = time.time()
     duration = end_time - start_time
     
-    if not success:
-        print("Failed to run parameter sweep")
-        return False
+    print(f"\n✓ Processed {successful_runs}/{len(config_files)} config files successfully")
+    print(f"Total time: {duration/60:.1f} minutes")
     
-    print(f"✓ Parameter sweep completed in {duration/60:.1f} minutes")
-    return True
+    return successful_runs == len(config_files)
 
 def run_statistical_analysis():
     """Run statistical analysis on simulation results."""
