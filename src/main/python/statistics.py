@@ -21,12 +21,18 @@ class ParameterStudyAnalyzer:
     
     def analyze_eta_study(self) -> Dict[float, StatisticsSummary]:
         """Analyze eta (noise) parameter study results."""
-        eta_path = os.path.join(self.base_path, "eta_study", "raw_data")
+        # Use absolute path from project root (go up 4 levels: python -> main -> src -> project)
+        project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+        eta_path = os.path.join(project_root, self.base_path, "eta_study", "raw_data")
+        print(f"Looking for eta data in: {eta_path}")
         return self._analyze_parameter_study(eta_path, "eta")
     
     def analyze_rho_study(self) -> Dict[float, StatisticsSummary]:
         """Analyze rho (density) parameter study results."""
-        rho_path = os.path.join(self.base_path, "rho_study", "raw_data")
+        # Use absolute path from project root (go up 4 levels: python -> main -> src -> project)
+        project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+        rho_path = os.path.join(project_root, self.base_path, "rho_study", "raw_data")
+        print(f"Looking for rho data in: {rho_path}")
         return self._analyze_parameter_study(rho_path, "rho")
     
     def _analyze_parameter_study(self, study_path: str, parameter_type: str) -> Dict[float, StatisticsSummary]:
@@ -37,12 +43,14 @@ class ParameterStudyAnalyzer:
         
         # Group runs by parameter value
         parameter_runs = {}
-        pattern = rf"{parameter_type}_(\d+\.?\d*)_run_(\d+)"
+        # Handle both comma and dot decimal separators
+        pattern = rf"{parameter_type}_(\d+[,.]?\d*)_run_(\d+)"
         
         for run_dir in os.listdir(study_path):
             match = re.match(pattern, run_dir)
             if match:
-                param_value = float(match.group(1))
+                param_str = match.group(1).replace(',', '.')  # Convert comma to dot
+                param_value = float(param_str)
                 run_number = int(match.group(2))
                 
                 if param_value not in parameter_runs:

@@ -176,6 +176,8 @@ cython_debug/
 **/animations/*.mp4
 
 particles_t0.json
+/results
+src/main/python/results
 Scripts
 pyvenv.cfg
 share/man/man1/ttx.1

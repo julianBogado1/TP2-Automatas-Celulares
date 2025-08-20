@@ -24,7 +24,7 @@ class CurvePlotter:
     
     def plot_eta_vs_va(self, save_path: str = None, show: bool = True):
         """Plot noise (η) vs order parameter (va) curve."""
-        print("Generating η vs va curve...")
+        print("Generating eta vs va curve...")
         
         eta_results = self.analyzer.analyze_eta_study()
         if not eta_results:
@@ -43,7 +43,7 @@ class CurvePlotter:
                    label='Order Parameter ($v_a$)')
         
         # Styling
-        ax.set_xlabel('Noise Level (η)', fontsize=14, fontweight='bold')
+        ax.set_xlabel('Noise Level (eta)', fontsize=14, fontweight='bold')
         ax.set_ylabel('Order Parameter ($v_a$)', fontsize=14, fontweight='bold')
         ax.set_title('Order Parameter vs Noise Level\n(Off-lattice Flocking Model)', 
                     fontsize=16, fontweight='bold', pad=20)
@@ -56,7 +56,7 @@ class CurvePlotter:
         ax.set_ylim(-0.05, max(va_means) + 0.1)
         
         # Add parameter info text box
-        textstr = f'Fixed: ρ = 2.0 particles/unit²\nL = 20.0, N = 800\nRuns per point: 5'
+        textstr = f'Fixed: rho = 2.0 particles/unit²\nL = 15.0, N = 450\nRuns per point: 3'
         props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
         ax.text(0.02, 0.98, textstr, transform=ax.transAxes, fontsize=10,
                 verticalalignment='top', bbox=props)
@@ -75,7 +75,7 @@ class CurvePlotter:
     
     def plot_rho_vs_va(self, save_path: str = None, show: bool = True):
         """Plot density (ρ) vs order parameter (va) curve."""
-        print("Generating ρ vs va curve...")
+        print("Generating rho vs va curve...")
         
         rho_results = self.analyzer.analyze_rho_study()
         if not rho_results:
@@ -94,7 +94,7 @@ class CurvePlotter:
                    label='Order Parameter ($v_a$)')
         
         # Styling
-        ax.set_xlabel('Density (ρ) [particles/unit²]', fontsize=14, fontweight='bold')
+        ax.set_xlabel('Density (rho) [particles/unit²]', fontsize=14, fontweight='bold')
         ax.set_ylabel('Order Parameter ($v_a$)', fontsize=14, fontweight='bold') 
         ax.set_title('Order Parameter vs Density\n(Off-lattice Flocking Model)',
                     fontsize=16, fontweight='bold', pad=20)
@@ -107,7 +107,7 @@ class CurvePlotter:
         ax.set_ylim(-0.05, max(va_means) + 0.1)
         
         # Add parameter info text box
-        textstr = f'Fixed: η = 1.0\nL = 20.0, R = 1.0\nRuns per point: 5'
+        textstr = f'Fixed: eta = 1.0\nL = 15.0, R = 1.0\nRuns per point: 3'
         props = dict(boxstyle='round', facecolor='lightblue', alpha=0.5)
         ax.text(0.02, 0.98, textstr, transform=ax.transAxes, fontsize=10,
                 verticalalignment='top', bbox=props)
@@ -144,7 +144,7 @@ class CurvePlotter:
                         marker='o', markersize=8, linewidth=2, capsize=5,
                         color='blue', ecolor='darkblue', capthick=2)
             
-            ax1.set_xlabel('Noise Level (η)', fontsize=12, fontweight='bold')
+            ax1.set_xlabel('Noise Level (eta)', fontsize=12, fontweight='bold')
             ax1.set_ylabel('Order Parameter ($v_a$)', fontsize=12, fontweight='bold')
             ax1.set_title('(a) Order Parameter vs Noise', fontsize=14, fontweight='bold')
             ax1.grid(True, alpha=0.3, linestyle='--')
@@ -158,7 +158,7 @@ class CurvePlotter:
                         marker='s', markersize=8, linewidth=2, capsize=5,
                         color='red', ecolor='darkred', capthick=2)
             
-            ax2.set_xlabel('Density (ρ) [particles/unit²]', fontsize=12, fontweight='bold')
+            ax2.set_xlabel('Density (rho) [particles/unit²]', fontsize=12, fontweight='bold')
             ax2.set_ylabel('Order Parameter ($v_a$)', fontsize=12, fontweight='bold')
             ax2.set_title('(b) Order Parameter vs Density', fontsize=14, fontweight='bold')
             ax2.grid(True, alpha=0.3, linestyle='--')

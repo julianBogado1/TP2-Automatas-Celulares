@@ -43,7 +43,7 @@ def check_java_installation():
     print("Checking Java and Maven installation...")
     
     java_ok = run_command(["java", "--version"], "Java version check")
-    maven_ok = run_command(["mvn", "--version"], "Maven version check")
+    maven_ok = run_command(["mvn.cmd", "--version"], "Maven version check")
     
     if not java_ok or not maven_ok:
         print("Error: Java 21+ and Maven are required for this study")
@@ -61,7 +61,7 @@ def compile_java_project():
     print(f"pom.xml exists: {(project_root / 'pom.xml').exists()}")
     
     success = run_command(
-        ["mvn", "compile"], 
+        ["mvn.cmd", "compile"], 
         "Maven compile",
         cwd=project_root
     )
@@ -86,7 +86,7 @@ def run_parameter_sweep():
     start_time = time.time()
     
     success = run_command([
-        "mvn", "exec:java",
+        "mvn.cmd", "exec:java",
         "-Dexec.mainClass=ar.edu.itba.sims.Inciso1c",
         "-Dexec.cleanupDaemonThreads=false"
     ], "Parameter sweep simulations", cwd=project_root)
@@ -146,8 +146,8 @@ Generated on: {time.strftime('%Y-%m-%d %H:%M:%S')}
 This report summarizes the results of the off-lattice flocking model parameter study.
 
 ### Parameters Studied:
-1. **Noise (η) Study**: Varied noise level from 0.0 to 5.0 (fixed density ρ = 2.0)
-2. **Density (ρ) Study**: Varied density from 0.5 to 5.0 particles/unit² (fixed noise η = 1.0)
+1. **Noise (eta) Study**: Varied noise level from 0.0 to 5.0 (fixed density rho = 2.0)
+2. **Density (rho) Study**: Varied density from 0.5 to 5.0 particles/unit² (fixed noise eta = 1.0)
 
 ### Fixed Parameters:
 - Box size (L): 20.0
@@ -169,8 +169,8 @@ This report summarizes the results of the off-lattice flocking model parameter s
 
 ## Interpretation:
 The order parameter (va) measures the degree of collective alignment in the flock.
-- va ≈ 0: Random motion (disordered phase)
-- va ≈ 1: Perfect alignment (ordered phase)
+- va ~ 0: Random motion (disordered phase)
+- va ~ 1: Perfect alignment (ordered phase)
 
 Typical expectations:
 - **Noise study**: Higher noise should decrease order parameter
