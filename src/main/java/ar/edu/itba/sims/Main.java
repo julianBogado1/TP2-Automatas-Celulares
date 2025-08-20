@@ -6,12 +6,10 @@ import ar.edu.itba.sims.neighbours.CIM;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Executors;
 
@@ -93,22 +91,6 @@ public class Main {
         final var directoryPath = "src/main/resources/time_slices";
         preparePath(directoryPath, resume != 0);
 
-        // Create order parameter file and writer
-        final var orderFile = new File(orderParameterFile);
-        orderFile.getParentFile().mkdirs();
-        final var orderWriter = new BufferedWriter(new FileWriter(orderParameterFile, resume > 0));
-
-        // Truncate file if resuming
-        if (resume > 0) {
-            try (final var stream = new FileOutputStream(orderParameterFile, true)) {
-                stream.getChannel().truncate(resume * 19L);
-            } catch (IOException e) {
-                System.err.println("Error resuming simulation: " + e.getMessage());
-                orderWriter.close();
-                return;
-            }
-        }
-
         // Resuming with the info from the previous step
         if (resume > 0) {
             final var particles_neighbors = CIM.evaluate(particles, L, Rc);
@@ -119,21 +101,13 @@ public class Main {
         final var progress_step = Math.max(1, steps / 10);
         for (int i = resume; i < steps; i++) {
             // Skip animation output for parameter study (performance improvement)
-            // if (i % animation_step == 0) {
-            //     executor.submit(new Animator(i / animation_step, particles));
-            // }
+            if (i % animation_step == 0) {
+                executor.submit(new Animator(i / animation_step, particles));
+            }
 
             if (i % progress_step == 0) {
                 System.out.println("Progress: " + (i * 100 / steps) + "%");
             }
-
-            // Calculate order parameter
-            final var avgVelocity = new Vector(0, 0);
-            for (final var p : particles) {
-                avgVelocity.add(p.getVelocity());
-            }
-            final var orden = avgVelocity.getMagnitude() / (particles.size() * v);
-            orderWriter.write(String.format(Locale.ROOT, "%.16f\n", orden));
 
             // If not the last step, calculate the next frame
             if (i + 1 != steps) {
@@ -142,7 +116,6 @@ public class Main {
             }
         }
 
-        orderWriter.close();
         executor.shutdown();
     }
 
