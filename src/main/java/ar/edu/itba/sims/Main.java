@@ -109,6 +109,7 @@ public class Main {
         }
 
         executor.shutdown();
+        CIM.shutdown();
     }
 
     private record Animator(int frame, List<Particle> particles) implements Runnable {
