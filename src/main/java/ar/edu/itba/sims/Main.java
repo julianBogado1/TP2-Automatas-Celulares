@@ -55,6 +55,7 @@ public class Main {
         final var directoryPath = "src/main/resources/time_slices";
         preparePath(directoryPath, resume);
 
+        final var animation_step = 5;
         final var iterator = simulator.iterator();
 
         // Save the initial state
@@ -62,12 +63,10 @@ public class Main {
             executor.submit(new Animator(0, simulator.getInitialParticles()));
         }
 
-        final var animation_step = 5;
-        // final var progress_step = Math.max(1, steps / 10);
         while (iterator.hasNext()) {
             final var iteration = iterator.next();
-            final var i = iteration.step();
 
+            final var i = iteration.step();
             if (i % animation_step == 0) {
                 executor.submit(new Animator(i / animation_step, iteration.particles()));
             }
