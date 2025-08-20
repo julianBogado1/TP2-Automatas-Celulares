@@ -41,8 +41,7 @@ public class Observables {
     }
 
     private void observe(final File[] files) {
-        final ExecutorService executor = Executors.newFixedThreadPool(12);
-
+        final var executor = Executors.newFixedThreadPool(12);
         try {
             observer.observe(executor, files);
         } finally {
