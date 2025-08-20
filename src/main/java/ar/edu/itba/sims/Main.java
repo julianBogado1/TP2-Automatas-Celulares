@@ -30,12 +30,19 @@ public class Main {
             particles = InitialStateParser.buildInitialState(ic);
         }
 
+        final var simulator = Map.<String, Simulator>of(
+                "average", Main::nextFrameAverage).get(ic.getInteraction());
+
+        if (simulator == null) {
+            throw new IllegalArgumentException("Unknown interaction type: " + ic.getInteraction());
+        }
+
         double L = ic.getL();
         double Rc = ic.getR();
         double noise = ic.getNoise();
         int steps = ic.getSteps();
         double v = ic.getV();
-        simulate(Main::nextFrameAverage, L, Rc, noise, steps, v, particles, resume);
+        simulate(simulator, L, Rc, noise, steps, v, particles, resume);
     }
 
     public static List<Particle> nextFrameAverage(Map<Particle, List<Particle>> particles_neighbors, double L,
