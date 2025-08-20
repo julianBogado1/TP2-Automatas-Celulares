@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.Executors;
 
 public class Main {
@@ -31,7 +32,8 @@ public class Main {
         }
 
         final var simulator = Map.<String, Simulator>of(
-                "average", Main::nextFrameAverage).get(ic.getInteraction());
+                "average", Main::nextFrameAverage,
+                "voter", Main::nextFrameVoter).get(ic.getInteraction());
 
         if (simulator == null) {
             throw new IllegalArgumentException("Unknown interaction type: " + ic.getInteraction());
@@ -68,6 +70,35 @@ public class Main {
 
             result.add(new Particle(newX, newY, entry.getKey().getR(), entry.getKey().getV(), newTheta));
         }
+        return result;
+    }
+
+    public static List<Particle> nextFrameVoter(Map<Particle, List<Particle>> particles_neighbors, double L,
+            double noise, double v) {
+        final var random = new Random();
+
+        final List<Particle> result = new ArrayList<>(particles_neighbors.size());
+
+        for (final var entry : particles_neighbors.entrySet()) {
+            var velocity = entry.getKey().getVelocity();
+            var newX = entry.getKey().getX() + velocity.getX();
+            var newY = entry.getKey().getY() + velocity.getY();
+
+            // Check boundaries
+            if (newX < 0 || newX > L) {
+                newX = Math.abs(newX + L) % L; // Wrap around horizontally
+            }
+            if (newY < 0 || newY > L) {
+                newY = Math.abs(newY + L) % L; // Wrap around vertically
+            }
+
+            final var neighbours = entry.getValue();
+            final var newTheta = neighbours.get(random.nextInt(neighbours.size())).getTheta()
+                    + (Math.random() - 0.5) * noise;
+
+            result.add(new Particle(newX, newY, entry.getKey().getR(), entry.getKey().getV(), newTheta));
+        }
+
         return result;
     }
 
