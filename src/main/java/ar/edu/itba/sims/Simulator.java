@@ -78,8 +78,12 @@ public class Simulator implements Iterable<Simulator.Iteration> {
         };
     }
 
-    public List<Particle> getInitialParticles() {
+    public List<Particle> getInitialState() {
         return particles;
+    }
+
+    public int getSteps() {
+        return steps;
     }
 
     private static double averageInteraction(final Particle p, final List<Particle> neighbours) {
