@@ -15,7 +15,7 @@ import java.util.concurrent.Executors;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        InitialConditions ic = InitialStateParser.parse("initial_conditions.json", InitialConditions.class);
+        InitialConditions ic = InitialStateParser.parse(System.getProperty("input", "initial_conditions.json"), InitialConditions.class);
 
         final int resume = Integer.valueOf(args.length > 0 ? args[0] : "0");
 
