@@ -34,7 +34,7 @@ public class Main {
         double noise = ic.getNoise();
         int steps = ic.getSteps();
         double v = ic.getV();
-        simulate(L, Rc, noise, steps, v, particles, resume);
+        simulate(Main::nextFrameAverage, L, Rc, noise, steps, v, particles, resume);
     }
 
     public static List<Particle> nextFrameAverage(Map<Particle, List<Particle>> particles_neighbors, double L, double noise,
@@ -76,7 +76,7 @@ public class Main {
         }
     }
 
-    public static void simulate(double L, double Rc, double noise, int steps, double v, List<Particle> particles, int resume)
+    public static void simulate(Simulator simulator, double L, double Rc, double noise, int steps, double v, List<Particle> particles, int resume)
             throws IOException {
         final var executor = Executors.newFixedThreadPool(3);
 
@@ -86,7 +86,7 @@ public class Main {
         // Resuming with the info from the previous step
         if (resume > 0) {
             final var particles_neighbors = CIM.evaluate(particles, L, Rc);
-            particles = nextFrameAverage(particles_neighbors, L, noise, v);
+            particles = simulator.next(particles_neighbors, L, noise, v);
         }
 
         final var animation_step = 5;
@@ -104,7 +104,7 @@ public class Main {
             // If not the last step, calculate the next frame
             if (i + 1 != steps) {
                 final var particles_neighbors = CIM.evaluate(particles, L, Rc);
-                particles = nextFrameAverage(particles_neighbors, L, noise, v);
+                particles = simulator.next(particles_neighbors, L, noise, v);
             }
         }
 
@@ -133,5 +133,9 @@ public class Main {
                 e.printStackTrace();
             }
         }
+    }
+
+    private interface Simulator {
+        List<Particle> next(final Map<Particle, List<Particle>> particles_neighbors, final double L, final double noise, final double v);
     }
 }
