@@ -15,7 +15,8 @@ import java.util.concurrent.Executors;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        InitialConditions ic = InitialStateParser.parse(System.getProperty("input", "initial_conditions.json"), InitialConditions.class);
+        InitialConditions ic = InitialStateParser.parse(System.getProperty("input", "initial_conditions.json"),
+                InitialConditions.class);
 
         final int resume = Integer.valueOf(args.length > 0 ? args[0] : "0");
 
@@ -37,8 +38,8 @@ public class Main {
         simulate(Main::nextFrameAverage, L, Rc, noise, steps, v, particles, resume);
     }
 
-    public static List<Particle> nextFrameAverage(Map<Particle, List<Particle>> particles_neighbors, double L, double noise,
-            double v) {
+    public static List<Particle> nextFrameAverage(Map<Particle, List<Particle>> particles_neighbors, double L,
+            double noise, double v) {
 
         List<Particle> result = new ArrayList<>();
 
@@ -76,8 +77,8 @@ public class Main {
         }
     }
 
-    public static void simulate(Simulator simulator, double L, double Rc, double noise, int steps, double v, List<Particle> particles, int resume)
-            throws IOException {
+    public static void simulate(Simulator simulator, double L, double Rc, double noise, int steps, double v,
+            List<Particle> particles, int resume) throws IOException {
         final var executor = Executors.newFixedThreadPool(3);
 
         final var directoryPath = "src/main/resources/time_slices";
@@ -136,6 +137,7 @@ public class Main {
     }
 
     private interface Simulator {
-        List<Particle> next(final Map<Particle, List<Particle>> particles_neighbors, final double L, final double noise, final double v);
+        List<Particle> next(final Map<Particle, List<Particle>> particles_neighbors, final double L, final double noise,
+                final double v);
     }
 }
