@@ -5,6 +5,7 @@
   "n": 5000,
   "noise": 0.1,
   "steps": 1000,
+  "interaction": "average",
   "show_animation": false,
   "save_animation": true
 }

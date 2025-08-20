@@ -12,6 +12,7 @@ public class InitialConditions {
     private int n;
     private double noise;
     private int steps;
+    private String interaction;
 
     @Deprecated
     public InitialConditions(double r, double v, double L, int N, double noise, int steps) {
@@ -75,4 +76,7 @@ public class InitialConditions {
         this.steps = steps;
     }
 
+    public String getInteraction() {
+        return interaction;
+    }
 }
