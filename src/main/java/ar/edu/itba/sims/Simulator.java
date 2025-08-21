@@ -19,20 +19,23 @@ public class Simulator implements Iterable<Simulator.Iteration> {
     private final int start;
     private final int steps;
 
-    public Simulator(final List<Particle> particles, final double L, final double Rc,
-            final double noise, final double v, final int start, final int steps, final String interaction) {
-        this.interaction = switch (interaction) {
+    public Simulator(final List<Particle> particles, final InitialConditions conditions) {
+        this(particles, conditions, 0);
+    }
+
+    public Simulator(final List<Particle> particles, final InitialConditions conditions, int start) {
+        this.interaction = switch (conditions.getInteraction()) {
             case "average" -> Simulator::averageInteraction;
             case "voter" -> Simulator::voterInteraction;
-            default -> throw new IllegalArgumentException("Unknown interaction type: " + interaction);
+            default -> throw new IllegalArgumentException("Unknown interaction type: " + conditions.getInteraction());
         };
 
         this.particles = particles;
-        this.L = L;
-        this.Rc = Rc;
-        this.noise = noise;
+        this.L = conditions.getL();
+        this.Rc = conditions.getR();
+        this.noise = conditions.getNoise();
+        this.steps = conditions.getSteps();
         this.start = start;
-        this.steps = steps;
     }
 
     @Override

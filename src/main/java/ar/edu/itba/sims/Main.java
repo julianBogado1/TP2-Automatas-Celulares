@@ -16,23 +16,22 @@ public class Main {
         final var ic = InitialStateParser.parse(System.getProperty("input", "initial_conditions.json"));
         final int resume = Integer.valueOf(args.length > 0 ? args[0] : "0");
 
-        List<Particle> particles;
+        final List<Particle> particles;
+        final Simulator simulator;
+
         if (resume > 0) {
             System.out.println("Resuming simulation from step " + resume);
             // Retrieve the particles from the previous animation step
             final var prev = resume / 5 /* Animation step */ - (resume % 5 == 0 ? 1 : 0);
             particles = InitialStateParser.parseParticles(prev);
+
+            simulator = new Simulator(particles, ic, resume);
         } else {
             particles = InitialStateParser.buildInitialState(ic);
+            simulator = new Simulator(particles, ic);
         }
 
-        double L = ic.getL();
-        double Rc = ic.getR();
-        double noise = ic.getNoise();
-        int steps = ic.getSteps();
-        double v = ic.getV();
-        final var interaction = ic.getInteraction();
-        simulate(new Simulator(particles, L, Rc, noise, v, resume, steps, interaction), resume > 0);
+        simulate(simulator, resume > 0);
     }
 
     private static void preparePath(String path, boolean preserve) {
