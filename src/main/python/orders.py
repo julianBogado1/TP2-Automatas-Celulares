@@ -23,15 +23,14 @@ for filename in sources:
     y_axis = list(range(0, len(numbers) * 5, 5))
     ax.plot(y_axis, numbers, label=filename.replace('.txt', ''))
 
-plt.title('Parametro de Orden en funcion de los pasos')
-plt.xlabel('Pasos')
-plt.ylabel('Orden')
-plt.grid(True)
-
 ax.ticklabel_format(useOffset=False, style='plain')
 
 fig.tight_layout()
 fig.subplots_adjust(right=0.75)
 fig.legend(loc=7)
 
+plt.title('Parametro de Orden en funcion de los pasos')
+plt.xlabel('Pasos')
+plt.ylabel('Orden')
+plt.grid(True)
 plt.show()
