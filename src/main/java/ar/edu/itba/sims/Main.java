@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.concurrent.Executors;
 
 public class Main {
+    private static final int animation_step = 5;
+
     public static void main(String[] args) throws IOException {
         final var ic = InitialStateParser.parse(System.getProperty("input", "initial_conditions.json"));
         final int resume = Integer.valueOf(args.length > 0 ? args[0] : "0");
@@ -21,10 +23,8 @@ public class Main {
 
         if (resume > 0) {
             System.out.println("Resuming simulation from step " + resume);
-            // Retrieve the particles from the previous animation step
-            final var prev = resume / 5 /* Animation step */ - (resume % 5 == 0 ? 1 : 0);
-            particles = InitialStateParser.parseParticles(prev);
 
+            particles = InitialStateParser.parseParticles(resume / animation_step);
             simulator = new Simulator(particles, ic, resume);
         } else {
             particles = InitialStateParser.buildInitialState(ic);
@@ -48,7 +48,6 @@ public class Main {
     }
 
     public static void simulate(final Simulator simulator, final boolean resume) throws IOException {
-        final var animation_step = 5;
         final var directoryPath = "src/main/resources/time_slices";
 
         try (final var executor = Executors.newFixedThreadPool(3);

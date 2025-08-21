@@ -74,7 +74,9 @@ public class Simulator implements Iterable<Simulator.Iteration> {
                 });
 
                 simulation = result;
-                return new Iteration(current++, List.copyOf(simulation));
+                current++;
+
+                return new Iteration(current, List.copyOf(simulation));
             }
         };
     }
