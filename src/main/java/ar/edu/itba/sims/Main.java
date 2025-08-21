@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 
 public class Main {
     private static final int animation_step = 5;
+    private static final String directoryPath = "src/main/resources/time_slices";
 
     public static void main(String[] args) throws IOException {
         final var ic = InitialStateParser.parse(System.getProperty("input", "initial_conditions.json"));
@@ -48,8 +49,6 @@ public class Main {
     }
 
     public static void simulate(final Simulator simulator, final boolean resume) throws IOException {
-        final var directoryPath = "src/main/resources/time_slices";
-
         try (final var executor = Executors.newFixedThreadPool(3);
                 final var pb = new ProgressBar("Simulating", simulator.getSteps())) {
             final var iterator = simulator.iterator();
