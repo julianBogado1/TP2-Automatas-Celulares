@@ -50,7 +50,7 @@ public class Observables {
     }
 
     private void v_a(final ExecutorService executor, final File[] files) {
-        final var ic = InitialStateParser.parse("initial_conditions.json", InitialConditions.class);
+        final var ic = InitialStateParser.parse("initial_conditions.json");
         final var v = ic.getV();
 
         final var output = new ConcurrentHashMap<Integer, Double>(files.length + 1, 1.0f);
