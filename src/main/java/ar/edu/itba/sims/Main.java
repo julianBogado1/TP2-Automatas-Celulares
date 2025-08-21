@@ -19,16 +19,14 @@ public class Main {
         final var ic = InitialStateParser.parse(System.getProperty("input", "initial_conditions.json"));
         final int resume = Integer.valueOf(args.length > 0 ? args[0] : "0");
 
-        final List<Particle> particles;
         final Simulator simulator;
-
         if (resume > 0) {
             System.out.println("Resuming simulation from step " + resume);
 
-            particles = InitialStateParser.parseParticles(resume / animation_step);
+            var particles = InitialStateParser.parseParticles(resume / animation_step);
             simulator = new Simulator(particles, ic, resume);
         } else {
-            particles = InitialStateParser.buildInitialState(ic);
+            var particles = InitialStateParser.buildInitialState(ic);
             simulator = new Simulator(particles, ic);
         }
 
