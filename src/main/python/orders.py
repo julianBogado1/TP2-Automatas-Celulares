@@ -26,7 +26,7 @@ for filename in sources:
 ax.ticklabel_format(useOffset=False, style='plain')
 
 fig.tight_layout()
-fig.subplots_adjust(right=0.75)
+fig.subplots_adjust(right=0.8)
 fig.legend(loc=7)
 
 plt.title('Orden en funcion de los pasos')
