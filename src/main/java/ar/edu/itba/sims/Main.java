@@ -14,7 +14,6 @@ import java.util.concurrent.Executors;
 public class Main {
     public static void main(String[] args) throws IOException {
         final var ic = InitialStateParser.parse(System.getProperty("input", "initial_conditions.json"));
-
         final int resume = Integer.valueOf(args.length > 0 ? args[0] : "0");
 
         List<Particle> particles;
