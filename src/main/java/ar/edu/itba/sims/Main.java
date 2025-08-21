@@ -2,6 +2,7 @@ package ar.edu.itba.sims;
 
 import ar.edu.itba.sims.models.Particle;
 import ar.edu.itba.sims.neighbours.CIM;
+import me.tongfei.progressbar.ProgressBar;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -50,34 +51,35 @@ public class Main {
     }
 
     public static void simulate(final Simulator simulator, final boolean resume) throws IOException {
-        final var executor = Executors.newFixedThreadPool(3);
-
-        final var directoryPath = "src/main/resources/time_slices";
-        preparePath(directoryPath, resume);
-
         final var animation_step = 5;
-        final var iterator = simulator.iterator();
+        final var directoryPath = "src/main/resources/time_slices";
 
-        // Save the initial state
-        if (!resume) {
-            executor.submit(new Animator(0, simulator.getInitialParticles()));
-        }
+        try (final var executor = Executors.newFixedThreadPool(3);
+                final var pb = new ProgressBar("Simulating", simulator.getSteps())) {
+            final var iterator = simulator.iterator();
 
-        while (iterator.hasNext()) {
-            final var iteration = iterator.next();
+            preparePath(directoryPath, resume);
 
-            final var i = iteration.step();
-            if (i % animation_step == 0) {
-                executor.submit(new Animator(i / animation_step, iteration.particles()));
+            if (!resume) {
+                executor.submit(new Animator(0, simulator.getInitialState()));
+            } else if (iterator.hasNext()) {
+                // Skip the first iteration if resuming
+                iterator.next();
             }
 
-            // if (i % progress_step == 0) {
-            //     System.out.println("Progress: " + (i * 100 / steps) + "%");
-            // }
-        }
+            while (iterator.hasNext()) {
+                final var iteration = iterator.next();
+                final var i = iteration.step();
 
-        executor.shutdown();
-        CIM.shutdown();
+                if (i % animation_step == 0) {
+                    executor.submit(new Animator(i / animation_step, iteration.particles()));
+                }
+
+                pb.stepTo(i);
+            }
+        } finally {
+            CIM.shutdown();
+        }
     }
 
     private record Animator(int frame, List<Particle> particles) implements Runnable {
