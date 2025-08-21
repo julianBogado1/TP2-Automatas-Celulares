@@ -29,7 +29,7 @@ fig.tight_layout()
 fig.subplots_adjust(right=0.75)
 fig.legend(loc=7)
 
-plt.title('Parametro de Orden en funcion de los pasos')
+plt.title('Orden en funcion de los pasos')
 plt.xlabel('Pasos')
 plt.ylabel('Orden')
 plt.grid(True)
