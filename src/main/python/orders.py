@@ -1,3 +1,5 @@
+from typing import cast
+
 import matplotlib.pyplot as plt
 
 import os
@@ -5,6 +7,9 @@ import os
 import sys
 
 from resources import path
+
+box = plt.gca().get_position()
+plt.gca().set_position(cast(tuple[float, float, float, float], [box.x0, box.y0, box.width * 0.8, box.height]))
 
 folder = path('order_parameter')
 
@@ -20,9 +25,9 @@ for filename in sources:
 
     plt.plot(numbers, label=filename.replace('.txt', ''))
 
-plt.title('Parametro de Orden en funcion del Tiempo')
-plt.xlabel('Tiempo (steps)')
+plt.title('Parametro de Orden en funcion de los pasos')
+plt.xlabel('Pasos')
 plt.ylabel('Orden')
 plt.grid(True)
-plt.legend()
+plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 plt.show()
