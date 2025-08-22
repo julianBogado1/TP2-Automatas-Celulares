@@ -85,7 +85,7 @@ public class Observables {
             directory.mkdirs();
         }
 
-        final var filename = "N-%d L-%.2f Ruido-%.2f.txt".formatted(ic.getN(), ic.getL(), ic.getNoise());
+        final var filename = "%s N-%d L-%.2f Ruido-%.2f.txt".formatted(ic.getInteraction(), ic.getN(), ic.getL(), ic.getNoise());
         try (final var writer = new BufferedWriter(new FileWriter(Paths.get(folder, filename).toString()))) {
             latch.await();
 
