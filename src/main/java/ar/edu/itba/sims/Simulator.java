@@ -67,7 +67,7 @@ public class Simulator implements Iterable<Simulator.Iteration> {
                         newY = Math.abs(newY + L) % L; // Wrap around vertically
                     }
 
-                    final var n = random.nextDouble(noise) - noise / 2;
+                    final var n = noise == 0 ? 0 : random.nextDouble(noise) - noise / 2;
                     final var newTheta = interaction.interact(p, neighbours) + n;
 
                     result.add(new Particle(newX, newY, p.getR(), p.getV(), newTheta));
