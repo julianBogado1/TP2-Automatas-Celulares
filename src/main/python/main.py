@@ -36,6 +36,7 @@ def main(length: float, count: int, show: bool, save: bool):
         headwidth=40, headlength=60, headaxislength=50, minlength=0, pivot='middle'
     )
 
+    # I wanna die (Angulo)
     cbar = fig.colorbar(q, ax=ax, orientation='vertical', label='Angle (radians)')
     cbar.set_ticks([0, np.pi/2, np.pi, 3*np.pi/2, 2*np.pi])
     cbar.set_ticklabels([r'$0$', r'$\frac{\pi}{2}$', r'$\pi$', r'$\frac{3\pi}{2}$', r'$2\pi$'])
