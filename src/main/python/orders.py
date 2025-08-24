@@ -21,16 +21,11 @@ for filename in sources:
         numbers = [float(line.strip()) for line in f if line.strip()]
 
     y_axis = list(range(0, len(numbers) * 5, 5))
-    ax.plot(y_axis, numbers, label=filename.replace('.txt', ''))
+    ax.plot(y_axis, numbers)
 
 ax.ticklabel_format(useOffset=False, style='plain')
 
-fig.tight_layout()
-fig.subplots_adjust(right=0.8)
-fig.legend(loc=7)
-
-plt.title('Orden en funcion de los pasos')
-plt.xlabel('Pasos')
-plt.ylabel('Orden')
+plt.xlabel('Pasos', fontsize=20)
+plt.ylabel('Orden', fontsize=20)
 plt.grid(True)
 plt.show()
