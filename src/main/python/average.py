@@ -11,7 +11,7 @@ if len(sys.argv) != 3:
     sys.exit(1)
 
 filepath = path("order_parameter", sys.argv[1])
-start = int(sys.argv[2])
+start = int(int(sys.argv[2]) / 5)
 
 if not os.path.isfile(filepath):
     print(f"File {filepath} does not exist.")
