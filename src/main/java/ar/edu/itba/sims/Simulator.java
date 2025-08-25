@@ -94,7 +94,8 @@ public class Simulator implements Iterable<Simulator.Iteration> {
     }
 
     private static double voterInteraction(final Particle p, final List<Particle> neighbours) {
-        return neighbours.get(random.nextInt(neighbours.size())).getTheta();
+        final var rand = neighbours.size() > 1 ? random.nextInt(neighbours.size() - 1) + 1 : 0;
+        return neighbours.get(rand).getTheta();
     }
 
     public record Iteration(int step, List<Particle> particles) {
