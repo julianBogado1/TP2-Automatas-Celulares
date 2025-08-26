@@ -1,63 +1,49 @@
 import os
-import sys
+import glob
 import numpy as np
+import matplotlib.pyplot as plt
 
-def compute_avg_velocity(filename):
-    """
-    Reads a single time slice file and computes avg velocity.
-    """
-    vx_list = []
-    vy_list = []
-    v_val = None
-    
-    with open(filename, "r") as f:
-        for line in f:
-            if not line.strip():
-                continue
-            x, y, r, v, theta = map(float, line.split())
-            v_val = v  # all v should be the same
-            vx = v * np.cos(theta)
-            vy = v * np.sin(theta)
-            vx_list.append(vx)
-            vy_list.append(vy)
-    
-    N = len(vx_list)
-    if N == 0:
-        return 0.0
-    
-    # Vector sum
-    total_vx = sum(vx_list)
-    total_vy = sum(vy_list)
-    magnitude = np.sqrt(total_vx**2 + total_vy**2)
-    
-    # Formula: 1 / (N * v) * |sum v_i|
-    avg_v = magnitude / (N * v_val)
-    return avg_v
+def parse_file(filepath):
+    """Parse a consensus_time_steps file into (densities, steps, errors)."""
+    densities, steps, errors = [], [], []
+    with open(filepath, "r") as f:
+        lines = [line.strip() for line in f if line.strip()]
+        print(lines)
+        # Only process complete triplets
+        n = len(lines) // 3
+        for i in range(n):
+            densities.append(float(lines[3*i]))
+            steps.append(float(lines[3*i + 1]))
+            errors.append(float(lines[3*i + 2]))
 
+    return np.array(densities), np.array(steps), np.array(errors)
 
-def get_consensus_time_step(folder):
-    """
-    Reads all txt files in a folder, sorted by name, 
-    and returns the time step at which consensus is reached.
-    """
-    files = [f for f in os.listdir(folder) if f.endswith(".txt")]
-    files.sort(key=lambda x: int(os.path.splitext(x)[0]))
-    time_steps = 0
+def main():
+    folder = "./order_parameters"
+    files = sorted(glob.glob(os.path.join(folder, "consensus_time_step*.txt")))
+
+    plt.figure(figsize=(10, 6))
 
     for file in files:
-        filepath = os.path.join(folder, file)
-        print(f"\n Processing {filepath}")
-        avg_v = compute_avg_velocity(filepath)
-        time_steps += 1
-        if(avg_v >= 0.95):
-            print(f"Reached consensus at time step {time_steps}")
-            break
-    
-    return time_steps
+        densities, steps, errors = parse_file(file)
+        label = os.path.basename(file).replace(".txt", "")
 
+        plt.errorbar(
+            densities,
+            steps,
+            yerr=errors,
+            marker="o",
+            capsize=4,
+            label=label
+        )
+    plt.xscale("log")
+    plt.xlabel("Density")
+    plt.ylabel("Consensus Time Steps (mean)")
+    plt.title("Consensus Time Steps vs Density with Mean Error")
+    plt.legend()
+    plt.grid(True, which="both", linestyle="--", alpha=0.6)
+    plt.tight_layout()
+    plt.show()
 
 if __name__ == "__main__":
-    folder = "../resources/time_slices/"  # change this!
-    consensus_time_step = get_consensus_time_step(folder)
-    with open(f"order_parameters/consensus_time_step.txt", "w") as out_file:
-        out_file.write(f"{consensus_time_step}\n")
+    main()

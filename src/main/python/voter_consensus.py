@@ -6,7 +6,7 @@ import numpy as np
 import sys
 from resources import path
 
-with open(f"order_parameters/consensus_time_step.txt", "w") as out_file:
+with open(f"order_parameters/consensus_time_step{sys.argv[1]}.txt", "w") as out_file:
     def compute_avg_velocity(filename):
         """
         Reads a single time slice file and computes avg velocity.
@@ -38,6 +38,14 @@ with open(f"order_parameters/consensus_time_step.txt", "w") as out_file:
         avg_v = magnitude / (N * v_val)
         return avg_v
 
+    def tau_approx(N, rho):
+        if rho <= 1/np.pi:
+            tau = (2*N/(np.pi * rho))
+            if tau > 40000:
+                return 40000
+            return tau+100
+        else:
+            return 7000
 
     def get_consensus_time_step(folder):
         """
@@ -50,13 +58,10 @@ with open(f"order_parameters/consensus_time_step.txt", "w") as out_file:
 
         for file in files:
             filepath = os.path.join(folder, file)
-            print(f"\n Processing {filepath}")
             avg_v = compute_avg_velocity(filepath)
-            print(f" Average velocity: {avg_v}")
             time_steps += 1
             if(avg_v >= 0.95):
-                print(f"Reached consensus at time step {time_steps}")
-                return time_steps
+                return time_steps * 5
         
         return -1
 
@@ -68,70 +73,31 @@ with open(f"order_parameters/consensus_time_step.txt", "w") as out_file:
         with open(path('initial_conditions.json'), 'r') as f:
             config = json.load(f)
 
-        # params = [
-        #     {
-        #         'length': 1000,
-        #         'particles': 100,   #density = 0.0001
-        #         'steps': 50000
-        #     },
-        #     {
-        #         'length': 1000,
-        #         'particles': 1000,  #density = 0.001
-        #         'steps': 40000
-        #     },
-        #     {
-        #         'length': 10000,
-        #         'particles': 10000,  #density = 0.01
-        #         'steps': 15000
-        #     },
-        #     {
-        #         'length': 100,
-        #         'particles': 1000,  #density = 0.1
-        #         'steps': 15000
-        #     },
-        #     {
-        #         'length': 100,
-        #         'particles': 10000,  #density = 1
-        #         'steps': 10000
-        #     },
-        #     {
-        #         'length': 100,
-        #         'particles': 60000,  #density = 6
-        #         'steps': 5000
-        #     },
-        #     {
-        #         'length': 10,
-        #         'particles': 1000,  #density = 10
-        #         'steps': 5000
-        #     },
-        #     {
-        #         'length': 10,
-        #         'particles': 10000,  #density = 100
-        #         'steps': 5000
-        #     },
-        #     {
-        #         'length': 10,
-        #         'particles': 60000,  #density = 600
-        #         'steps': 20000
-        #     }
-        # ]
-
-        densities = np.linspace(0.0001, 100, 20).tolist()
-        # for i in range(len(params)):
-            # config['l'] = params[i]['length']
-            # config['n'] = params[i]['particles']
-            # config['steps'] = params[i]['steps']
+        # densities = np.logspace(-2,2, 10).tolist()
+        densities = [0.1]
+        N = config['n']
+        timesteps = [tau_approx(N, rho) for rho in densities]
+        print(densities)
+        print(timesteps)
         for i in range(len(densities)):
-            N = config['n']
+            
             config['l'] = int(np.sqrt(N / densities[i]))
+            config['steps'] = int(timesteps[i])
             with open(path('initial_conditions.json'), 'w') as f:
                 json.dump(config, f, indent=4)
-            # input(f"Running for length={config['l']} particles={config['n']} steps={config['steps']}...")
-            os.system("bash ../../../run.sh")
-            res = get_consensus_time_step(path('time_slices/'))
-            results.append(res)
-            out_file.write(f"{res}\n")
-    vary_prams()
 
-for v in results:
-    print(f"Consensus time step for run {results.index(v)}: {v}")
+            consensuses = []
+            for j in range(10):
+
+                os.system("bash ../../../run.sh")
+                res = get_consensus_time_step(path('time_slices/'))
+                # results.append(res)
+                consensuses.append(res)
+            
+            mean_consensus = np.mean(consensuses)
+            std_error = np.std(consensuses) / np.sqrt(len(consensuses))
+            out_file.write(f"{densities[i]}\n")
+            out_file.write(f"{mean_consensus}\n")
+            out_file.write(f"{std_error}\n")
+            out_file.write("\n")
+    vary_prams()
