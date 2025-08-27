@@ -33,6 +33,7 @@ class RunResult:
     cutoff_step: int
     steady_state_mean: float
     total_steps: int
+    seed: int = None
 
 class IndividualRunWorkflow:
     def __init__(self):
@@ -53,7 +54,8 @@ class IndividualRunWorkflow:
                             run_number=r["run_number"],
                             cutoff_step=r["cutoff_step"],
                             steady_state_mean=r["steady_state_mean"],
-                            total_steps=r["total_steps"]
+                            total_steps=r["total_steps"],
+                            seed=r.get("seed")  # Handle backward compatibility
                         ) for r in data
                     ]
                 print(f"✓ Loaded {len(self.results)} previous results")
@@ -303,7 +305,11 @@ class IndividualRunWorkflow:
             # Step 3: Calculate average
             steady_state_mean = self.calculate_steady_state_average(config_file, cutoff_step)
             
-            # Step 4: Store result
+            # Step 4: Store result (with seed from config)
+            with open(config_file, 'r') as f:
+                config_data = json.load(f)
+                config_seed = config_data.get("seed")
+            
             result = RunResult(
                 config_file=config_file,
                 parameter_type=param_type,
@@ -311,7 +317,8 @@ class IndividualRunWorkflow:
                 run_number=run_number,
                 cutoff_step=cutoff_step,
                 steady_state_mean=steady_state_mean,
-                total_steps=cutoff_step  # Placeholder - could read from config
+                total_steps=config_data.get("steps", cutoff_step),
+                seed=config_seed
             )
             
             self.results.append(result)
@@ -363,34 +370,59 @@ class IndividualRunWorkflow:
                 eta_means.append(np.mean(values))
                 eta_errors.append(np.std(values, ddof=1) / np.sqrt(len(values)) if len(values) > 1 else 0)
             
-            fig, ax = plt.subplots(figsize=(10, 8))
-            ax.errorbar(eta_values, eta_means, yerr=eta_errors, 
-                       fmt='o-', color='blue', capsize=5, capthick=2, linewidth=2, markersize=8,
-                       ecolor='blue', elinewidth=2)
+            # Configure font sizes ≥20pt according to requirements
+            plt.rcParams.update({
+                'font.size': 20,
+                'axes.labelsize': 22,
+                'axes.titlesize': 24,
+                'xtick.labelsize': 20,
+                'ytick.labelsize': 20,
+                'legend.fontsize': 20
+            })
             
-            ax.set_xlabel('Noise Level (η)', fontsize=14, fontweight='bold')
-            ax.set_ylabel('Order Parameter ⟨v_a⟩', fontsize=14, fontweight='bold')
-            ax.set_title('Vicsek Model: Order Parameter vs Noise Level\n(Manual Cutoff Analysis)', 
-                        fontsize=16, fontweight='bold', pad=20)
-            ax.grid(True, alpha=0.3, linestyle='--')
+            fig, ax = plt.subplots(figsize=(12, 9))
+            
+            # Plot with clear data points and error bars
+            ax.errorbar(eta_values, eta_means, yerr=eta_errors, 
+                       fmt='o-', color='blue', capsize=8, capthick=3, linewidth=2, markersize=12,
+                       ecolor='blue', elinewidth=3, alpha=0.8,
+                       label='Datos experimentales')
+            
+            # Spanish axis labels with proper units
+            ax.set_xlabel('Nivel de ruido eta (adimensional)', fontweight='bold')
+            ax.set_ylabel('Parámetro de orden promedio va (adimensional)', fontweight='bold')
+            ax.set_title('Modelo de Vicsek: Parámetro de Orden vs Nivel de Ruido', 
+                        fontweight='bold', pad=25)
+            
+            # Grid styling
+            ax.grid(True, alpha=0.3, linestyle='--', linewidth=1)
             ax.set_ylim(bottom=0, top=1)
             ax.set_xlim(left=min(eta_values) - 0.1, right=max(eta_values) + 0.1)
             
-            # Add run counts as text annotations
+            # Format axes with scientific notation when needed
+            from matplotlib.ticker import ScalarFormatter
+            formatter = ScalarFormatter(useMathText=True)
+            formatter.set_scientific(True)
+            formatter.set_powerlimits((-2, 2))
+            
+            # Add run counts with larger font
             for i, (eta, mean) in enumerate(zip(eta_values, eta_means)):
                 n_runs = len(eta_groups[eta])
-                ax.annotate(f'n={n_runs}', (eta, mean), xytext=(5, 10), 
-                           textcoords='offset points', ha='center', fontsize=10,
-                           bbox=dict(boxstyle='round,pad=0.3', facecolor='white', alpha=0.8))
+                ax.annotate(f'n={n_runs}', (eta, mean), xytext=(5, 15), 
+                           textcoords='offset points', ha='center', fontsize=18,
+                           bbox=dict(boxstyle='round,pad=0.3', facecolor='white', alpha=0.9))
             
-            # Add parameter info
-            info_text = f'Fixed parameters:\nDensity ρ = 2.0\nBox size L = 20\nTotal runs: {sum(len(values) for values in eta_groups.values())}'
+            # Add parameter info in Spanish with scientific notation
+            total_runs = sum(len(values) for values in eta_groups.values())
+            density_val = 2.0
+            box_size = 20
+            info_text = f'Parámetros fijos:\nDensidad ρ = {density_val:.1f} × 10⁰ (partículas/m²)\nTamaño de caja L = {box_size:.0f} × 10⁰ (m)\nTotal de corridas: {total_runs}'
             ax.text(0.02, 0.98, info_text, transform=ax.transAxes, 
                    verticalalignment='top', horizontalalignment='left',
-                   bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8),
-                   fontsize=11)
+                   bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.9),
+                   fontsize=18)
             
-            plt.tight_layout()
+            plt.tight_layout(pad=2.0)
             
             eta_filename = output_dir / "eta_vs_va_final.png"
             plt.savefig(eta_filename, dpi=300, bbox_inches='tight', facecolor='white')
@@ -409,34 +441,59 @@ class IndividualRunWorkflow:
                 rho_means.append(np.mean(values))
                 rho_errors.append(np.std(values, ddof=1) / np.sqrt(len(values)) if len(values) > 1 else 0)
             
-            fig, ax = plt.subplots(figsize=(10, 8))
-            ax.errorbar(rho_values, rho_means, yerr=rho_errors,
-                       fmt='s-', color='red', capsize=5, capthick=2, linewidth=2, markersize=8,
-                       ecolor='red', elinewidth=2)
+            # Configure font sizes ≥20pt according to requirements
+            plt.rcParams.update({
+                'font.size': 20,
+                'axes.labelsize': 22,
+                'axes.titlesize': 24,
+                'xtick.labelsize': 20,
+                'ytick.labelsize': 20,
+                'legend.fontsize': 20
+            })
             
-            ax.set_xlabel('Density (ρ) [particles/unit²]', fontsize=14, fontweight='bold')
-            ax.set_ylabel('Order Parameter ⟨v_a⟩', fontsize=14, fontweight='bold')
-            ax.set_title('Vicsek Model: Order Parameter vs Density\n(Manual Cutoff Analysis)', 
-                        fontsize=16, fontweight='bold', pad=20)
-            ax.grid(True, alpha=0.3, linestyle='--')
+            fig, ax = plt.subplots(figsize=(12, 9))
+            
+            # Plot with clear data points and error bars (square markers for distinction)
+            ax.errorbar(rho_values, rho_means, yerr=rho_errors,
+                       fmt='s-', color='red', capsize=8, capthick=3, linewidth=2, markersize=12,
+                       ecolor='red', elinewidth=3, alpha=0.8,
+                       label='Datos experimentales')
+            
+            # Spanish axis labels with proper MKS units
+            ax.set_xlabel('Densidad rho (partículas/m²)', fontweight='bold')
+            ax.set_ylabel('Parámetro de orden promedio va (adimensional)', fontweight='bold')
+            ax.set_title('Modelo de Vicsek: Parámetro de Orden vs Densidad', 
+                        fontweight='bold', pad=25)
+            
+            # Grid styling
+            ax.grid(True, alpha=0.3, linestyle='--', linewidth=1)
             ax.set_ylim(bottom=0, top=1)
             ax.set_xlim(left=min(rho_values) - 0.1, right=max(rho_values) + 0.1)
             
-            # Add run counts as text annotations
+            # Format axes with scientific notation when needed
+            from matplotlib.ticker import ScalarFormatter
+            formatter = ScalarFormatter(useMathText=True)
+            formatter.set_scientific(True)
+            formatter.set_powerlimits((-2, 2))
+            
+            # Add run counts with larger font
             for i, (rho, mean) in enumerate(zip(rho_values, rho_means)):
                 n_runs = len(rho_groups[rho])
-                ax.annotate(f'n={n_runs}', (rho, mean), xytext=(5, 10), 
-                           textcoords='offset points', ha='center', fontsize=10,
-                           bbox=dict(boxstyle='round,pad=0.3', facecolor='white', alpha=0.8))
+                ax.annotate(f'n={n_runs}', (rho, mean), xytext=(5, 15), 
+                           textcoords='offset points', ha='center', fontsize=18,
+                           bbox=dict(boxstyle='round,pad=0.3', facecolor='white', alpha=0.9))
             
-            # Add parameter info  
-            info_text = f'Fixed parameters:\nNoise η = 1.0\nBox size L = 20\nTotal runs: {sum(len(values) for values in rho_groups.values())}'
+            # Add parameter info in Spanish with scientific notation
+            total_runs = sum(len(values) for values in rho_groups.values())
+            noise_val = 1.0
+            box_size = 20
+            info_text = f'Parámetros fijos:\nRuido η = {noise_val:.1f} × 10⁰ (adimensional)\nTamaño de caja L = {box_size:.0f} × 10⁰ (m)\nTotal de corridas: {total_runs}'
             ax.text(0.02, 0.98, info_text, transform=ax.transAxes,
                    verticalalignment='top', horizontalalignment='left',
-                   bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.8),
-                   fontsize=11)
+                   bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.9),
+                   fontsize=18)
             
-            plt.tight_layout()
+            plt.tight_layout(pad=2.0)
             
             rho_filename = output_dir / "rho_vs_va_final.png"
             plt.savefig(rho_filename, dpi=300, bbox_inches='tight', facecolor='white')

@@ -8,6 +8,7 @@ based on the ranges used in Vicsek model literature.
 
 import json
 import os
+import random
 from pathlib import Path
 from typing import List, Dict, Any
 
@@ -22,6 +23,9 @@ def create_eta_configs(base_config: Dict[str, Any], eta_values: List[float],
         for run in range(1, runs_per_eta + 1):
             config = base_config.copy()
             config["noise"] = eta
+            
+            # Generate unique random seed for reproducibility
+            # config["seed"] = random.randint(1, 2**31 - 1)
             
             # Adjust particle count based on density and box size
             # For eta study: maintain density rho = 2.0
@@ -38,7 +42,7 @@ def create_eta_configs(base_config: Dict[str, Any], eta_values: List[float],
     print(f"✓ Generated {len(eta_values) * runs_per_eta} eta study configurations")
 
 def create_rho_configs(base_config: Dict[str, Any], rho_values: List[float], 
-                      runs_per_rho: int, output_dir: str) -> None:
+                      runs_per_rho: int, output_dir: str, expected_noise: int = 1.0) -> None:
     """Generate configuration files for rho (density) study."""
     os.makedirs(output_dir, exist_ok=True)
     
@@ -48,12 +52,15 @@ def create_rho_configs(base_config: Dict[str, Any], rho_values: List[float],
         for run in range(1, runs_per_rho + 1):
             config = base_config.copy()
             
+            # Generate unique random seed for reproducibility
+            # config["seed"] = random.randint(1, 2**31 - 1)
+            
             # Calculate particle count based on density
             L = config["l"]
             config["n"] = int(rho * L * L)
             
             # For rho study: fix noise at eta = 1.0
-            config["noise"] = 1.0
+            config["noise"] = expected_noise
             
             filename = f"rho_{rho:.1f}_run_{run}.json"
             filepath = os.path.join(output_dir, filename)
@@ -78,12 +85,12 @@ def main():
     }
     
     # Parameter ranges based on Vicsek model literature
-    eta_values = [0.0, 0.1, 0.2, 0.3, 0.4, 0.8, 1.2, 1.6, 2.0, 2.5, 3.0, 4.0, 5.0]  # Noise levels
-    rho_values = []                 # Density values
+    eta_values = [0.0, 0.1, 0.2, 0.3, 0.4, 0.8, 1.2, 1.6, 2.0, 2.25, 2.5, 3.0, 4.0, 5.0]  # Noise levels
+    rho_values = [0.01, 0.1, 0.25, 0.5, 1.0, 2.0, 3.0]                 # Density values
     
     # fixed values 
     fixed_n = 1000 # fixed n for eta study
-    fixed_noise = 1.0 # fixed noise for rho study
+    fixed_noise = 0.4 # fixed noise for rho study
     
     runs_per_parameter = 5  # Number of independent runs per parameter value
     
@@ -102,7 +109,7 @@ def main():
     create_eta_configs(base_config, eta_values, runs_per_parameter, str(eta_configs_dir), expected_n=fixed_n)
     
     # Generate rho study configurations  
-    create_rho_configs(base_config, rho_values, runs_per_parameter, str(rho_configs_dir))
+    create_rho_configs(base_config, rho_values, runs_per_parameter, str(rho_configs_dir), expected_noise=fixed_noise)
     
     print("\n✓ All configuration files generated successfully!")
     print(f"Total files created: {(len(eta_values) + len(rho_values)) * runs_per_parameter}")

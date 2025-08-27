@@ -403,5 +403,500 @@
     "cutoff_step": 30000,
     "steady_state_mean": 0.7982724656838972,
     "total_steps": 30000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_1.2_run_2.json",
+    "parameter_type": "eta",
+    "parameter_value": 1.2,
+    "run_number": 2,
+    "cutoff_step": 20000,
+    "steady_state_mean": 0.768736934253647,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_2.5_run_4.json",
+    "parameter_type": "eta",
+    "parameter_value": 2.5,
+    "run_number": 4,
+    "cutoff_step": 70000,
+    "steady_state_mean": 0.08060973068441173,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_2.5_run_5.json",
+    "parameter_type": "eta",
+    "parameter_value": 2.5,
+    "run_number": 5,
+    "cutoff_step": 70000,
+    "steady_state_mean": 0.07837685132798465,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_3.0_run_1.json",
+    "parameter_type": "eta",
+    "parameter_value": 3.0,
+    "run_number": 1,
+    "cutoff_step": 70000,
+    "steady_state_mean": 0.05136383160299124,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_3.0_run_2.json",
+    "parameter_type": "eta",
+    "parameter_value": 3.0,
+    "run_number": 2,
+    "cutoff_step": 80000,
+    "steady_state_mean": 0.0525453664567838,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_3.0_run_3.json",
+    "parameter_type": "eta",
+    "parameter_value": 3.0,
+    "run_number": 3,
+    "cutoff_step": 80000,
+    "steady_state_mean": 0.05231802029172089,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_3.0_run_4.json",
+    "parameter_type": "eta",
+    "parameter_value": 3.0,
+    "run_number": 4,
+    "cutoff_step": 70000,
+    "steady_state_mean": 0.05239781827120089,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_3.0_run_5.json",
+    "parameter_type": "eta",
+    "parameter_value": 3.0,
+    "run_number": 5,
+    "cutoff_step": 70000,
+    "steady_state_mean": 0.05154942462943145,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_2.5_run_2.json",
+    "parameter_type": "eta",
+    "parameter_value": 2.5,
+    "run_number": 2,
+    "cutoff_step": 80000,
+    "steady_state_mean": 0.08432377798277471,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_2.5_run_3.json",
+    "parameter_type": "eta",
+    "parameter_value": 2.5,
+    "run_number": 3,
+    "cutoff_step": 80000,
+    "steady_state_mean": 0.0805923743883103,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_4.0_run_1.json",
+    "parameter_type": "eta",
+    "parameter_value": 4.0,
+    "run_number": 1,
+    "cutoff_step": 70000,
+    "steady_state_mean": 0.03444504145262997,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_4.0_run_2.json",
+    "parameter_type": "eta",
+    "parameter_value": 4.0,
+    "run_number": 2,
+    "cutoff_step": 80000,
+    "steady_state_mean": 0.034141689929116516,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_4.0_run_3.json",
+    "parameter_type": "eta",
+    "parameter_value": 4.0,
+    "run_number": 3,
+    "cutoff_step": 80000,
+    "steady_state_mean": 0.03505488991701373,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_4.0_run_4.json",
+    "parameter_type": "eta",
+    "parameter_value": 4.0,
+    "run_number": 4,
+    "cutoff_step": 80000,
+    "steady_state_mean": 0.03456064718452742,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_4.0_run_5.json",
+    "parameter_type": "eta",
+    "parameter_value": 4.0,
+    "run_number": 5,
+    "cutoff_step": 80000,
+    "steady_state_mean": 0.03487075426131337,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_5.0_run_1.json",
+    "parameter_type": "eta",
+    "parameter_value": 5.0,
+    "run_number": 1,
+    "cutoff_step": 80000,
+    "steady_state_mean": 0.02930369661173692,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_5.0_run_2.json",
+    "parameter_type": "eta",
+    "parameter_value": 5.0,
+    "run_number": 2,
+    "cutoff_step": 80000,
+    "steady_state_mean": 0.029342194963900347,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_5.0_run_3.json",
+    "parameter_type": "eta",
+    "parameter_value": 5.0,
+    "run_number": 3,
+    "cutoff_step": 80000,
+    "steady_state_mean": 0.028878266367532657,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_5.0_run_4.json",
+    "parameter_type": "eta",
+    "parameter_value": 5.0,
+    "run_number": 4,
+    "cutoff_step": 80000,
+    "steady_state_mean": 0.02965205581149155,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_5.0_run_5.json",
+    "parameter_type": "eta",
+    "parameter_value": 5.0,
+    "run_number": 5,
+    "cutoff_step": 80000,
+    "steady_state_mean": 0.029715416683430865,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_0.2_run_1.json",
+    "parameter_type": "rho",
+    "parameter_value": 0.2,
+    "run_number": 1,
+    "cutoff_step": 60000,
+    "steady_state_mean": 0.6999782113593441,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_0.2_run_2.json",
+    "parameter_type": "rho",
+    "parameter_value": 0.2,
+    "run_number": 2,
+    "cutoff_step": 60000,
+    "steady_state_mean": 0.6324659921307932,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_0.2_run_3.json",
+    "parameter_type": "rho",
+    "parameter_value": 0.2,
+    "run_number": 3,
+    "cutoff_step": 60000,
+    "steady_state_mean": 0.665152757254029,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_0.2_run_4.json",
+    "parameter_type": "rho",
+    "parameter_value": 0.2,
+    "run_number": 4,
+    "cutoff_step": 50000,
+    "steady_state_mean": 0.6138834810081079,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_0.2_run_5.json",
+    "parameter_type": "rho",
+    "parameter_value": 0.2,
+    "run_number": 5,
+    "cutoff_step": 70000,
+    "steady_state_mean": 0.6418705598150458,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_0.5_run_1.json",
+    "parameter_type": "rho",
+    "parameter_value": 0.5,
+    "run_number": 1,
+    "cutoff_step": 50000,
+    "steady_state_mean": 0.767840879260724,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_0.5_run_2.json",
+    "parameter_type": "rho",
+    "parameter_value": 0.5,
+    "run_number": 2,
+    "cutoff_step": 60000,
+    "steady_state_mean": 0.8054125040750243,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_0.5_run_3.json",
+    "parameter_type": "rho",
+    "parameter_value": 0.5,
+    "run_number": 3,
+    "cutoff_step": 40000,
+    "steady_state_mean": 0.8088207540941043,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_0.5_run_4.json",
+    "parameter_type": "rho",
+    "parameter_value": 0.5,
+    "run_number": 4,
+    "cutoff_step": 45000,
+    "steady_state_mean": 0.7901850854748701,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_0.5_run_5.json",
+    "parameter_type": "rho",
+    "parameter_value": 0.5,
+    "run_number": 5,
+    "cutoff_step": 60000,
+    "steady_state_mean": 0.7357591023625455,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_1.0_run_1.json",
+    "parameter_type": "rho",
+    "parameter_value": 1.0,
+    "run_number": 1,
+    "cutoff_step": 40000,
+    "steady_state_mean": 0.8360663059966028,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_1.0_run_2.json",
+    "parameter_type": "rho",
+    "parameter_value": 1.0,
+    "run_number": 2,
+    "cutoff_step": 50000,
+    "steady_state_mean": 0.8840354753479808,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_1.0_run_3.json",
+    "parameter_type": "rho",
+    "parameter_value": 1.0,
+    "run_number": 3,
+    "cutoff_step": 70000,
+    "steady_state_mean": 0.8896617716997031,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_1.0_run_4.json",
+    "parameter_type": "rho",
+    "parameter_value": 1.0,
+    "run_number": 4,
+    "cutoff_step": 60000,
+    "steady_state_mean": 0.8361710067286152,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_1.0_run_5.json",
+    "parameter_type": "rho",
+    "parameter_value": 1.0,
+    "run_number": 5,
+    "cutoff_step": 40000,
+    "steady_state_mean": 0.858273900172659,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_2.0_run_1.json",
+    "parameter_type": "rho",
+    "parameter_value": 2.0,
+    "run_number": 1,
+    "cutoff_step": 40000,
+    "steady_state_mean": 0.9034754517589418,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_2.0_run_2.json",
+    "parameter_type": "rho",
+    "parameter_value": 2.0,
+    "run_number": 2,
+    "cutoff_step": 40000,
+    "steady_state_mean": 0.9073259905741322,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_2.0_run_3.json",
+    "parameter_type": "rho",
+    "parameter_value": 2.0,
+    "run_number": 3,
+    "cutoff_step": 20000,
+    "steady_state_mean": 0.8880770554917483,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_2.0_run_4.json",
+    "parameter_type": "rho",
+    "parameter_value": 2.0,
+    "run_number": 4,
+    "cutoff_step": 20000,
+    "steady_state_mean": 0.9034298102664106,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_2.0_run_5.json",
+    "parameter_type": "rho",
+    "parameter_value": 2.0,
+    "run_number": 5,
+    "cutoff_step": 70000,
+    "steady_state_mean": 0.9055193641686119,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_3.0_run_1.json",
+    "parameter_type": "rho",
+    "parameter_value": 3.0,
+    "run_number": 1,
+    "cutoff_step": 60000,
+    "steady_state_mean": 0.9465129503294186,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_3.0_run_2.json",
+    "parameter_type": "rho",
+    "parameter_value": 3.0,
+    "run_number": 2,
+    "cutoff_step": 40000,
+    "steady_state_mean": 0.9477761435349817,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_3.0_run_3.json",
+    "parameter_type": "rho",
+    "parameter_value": 3.0,
+    "run_number": 3,
+    "cutoff_step": 40000,
+    "steady_state_mean": 0.9449745295844327,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_3.0_run_4.json",
+    "parameter_type": "rho",
+    "parameter_value": 3.0,
+    "run_number": 4,
+    "cutoff_step": 30000,
+    "steady_state_mean": 0.9435419263117217,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_3.0_run_5.json",
+    "parameter_type": "rho",
+    "parameter_value": 3.0,
+    "run_number": 5,
+    "cutoff_step": 60000,
+    "steady_state_mean": 0.9494003809177255,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_2.2_run_1.json",
+    "parameter_type": "eta",
+    "parameter_value": 2.2,
+    "run_number": 1,
+    "cutoff_step": 50000,
+    "steady_state_mean": 0.44609341792494744,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_2.2_run_2.json",
+    "parameter_type": "eta",
+    "parameter_value": 2.2,
+    "run_number": 2,
+    "cutoff_step": 90000,
+    "steady_state_mean": 0.3762940421545218,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_2.2_run_3.json",
+    "parameter_type": "eta",
+    "parameter_value": 2.2,
+    "run_number": 3,
+    "cutoff_step": 40000,
+    "steady_state_mean": 0.3989859529227968,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_2.2_run_4.json",
+    "parameter_type": "eta",
+    "parameter_value": 2.2,
+    "run_number": 4,
+    "cutoff_step": 90000,
+    "steady_state_mean": 0.4619158009805225,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\eta_study\\configs\\eta_2.2_run_5.json",
+    "parameter_type": "eta",
+    "parameter_value": 2.2,
+    "run_number": 5,
+    "cutoff_step": 92000,
+    "steady_state_mean": 0.4126577479923012,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_0.1_run_1.json",
+    "parameter_type": "rho",
+    "parameter_value": 0.1,
+    "run_number": 1,
+    "cutoff_step": 60000,
+    "steady_state_mean": 0.5554511110926122,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_0.1_run_2.json",
+    "parameter_type": "rho",
+    "parameter_value": 0.1,
+    "run_number": 2,
+    "cutoff_step": 60000,
+    "steady_state_mean": 0.5327068435809407,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_0.1_run_3.json",
+    "parameter_type": "rho",
+    "parameter_value": 0.1,
+    "run_number": 3,
+    "cutoff_step": 60000,
+    "steady_state_mean": 0.5776071881619603,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_0.1_run_4.json",
+    "parameter_type": "rho",
+    "parameter_value": 0.1,
+    "run_number": 4,
+    "cutoff_step": 60000,
+    "steady_state_mean": 0.5254493850752506,
+    "total_steps": 100000
+  },
+  {
+    "config_file": "C:\\Users\\Harry\\home\\Facultad\\SimS\\TP2-Automatas-Celulares\\src\\main\\resources\\c\\rho_study\\configs\\rho_0.1_run_5.json",
+    "parameter_type": "rho",
+    "parameter_value": 0.1,
+    "run_number": 5,
+    "cutoff_step": 60000,
+    "steady_state_mean": 0.5976972905413542,
+    "total_steps": 100000
   }
 ]
