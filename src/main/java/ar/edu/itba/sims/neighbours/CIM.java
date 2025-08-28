@@ -34,6 +34,7 @@ public abstract class CIM {
         }
 
         final var M = (int) (L / Rc);
+        final var Ms = L / M;
         final var R2 = Rc * Rc;
 
         final var tasks = new ArrayList<Callable<Object>>(particles.size());
@@ -41,8 +42,8 @@ public abstract class CIM {
         final var result = new ConcurrentHashMap<Particle, List<Particle>>();
 
         for (final var p : particles) {
-            var i = (int) (p.getX() / Rc);
-            var j = (int) (p.getY() / Rc);
+            var i = (int) (p.getX() / Ms);
+            var j = (int) (p.getY() / Ms);
             matrix.get(i, j).add(p);
 
             final var neighbours = new LinkedList<Particle>();

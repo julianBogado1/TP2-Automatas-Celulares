@@ -15,12 +15,12 @@ import java.util.List;
 //      parsear un estado inicial desde un archivo JSON
 
 public class InitialStateParser {
-    public static <T> T parse(String resourceName, Class<T> clazz) {
+    public static InitialConditions parse(String resourceName) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.readValue(
                     new File("src/main/resources/" + resourceName),
-                    clazz
+                    InitialConditions.class
             );
         } catch (Exception e) {
             e.printStackTrace();

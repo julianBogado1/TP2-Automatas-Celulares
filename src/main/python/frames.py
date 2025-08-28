@@ -8,9 +8,6 @@ import resources
 def next(f: int):
     """
     Reads the input file for a given frame.
-
-    Assumes there is a .gitkeep in the directory.
-    Assumes all the other files are input files.
     """
     file_path = resources.path('time_slices', f"{f}.txt")
     with open(file_path, 'r') as file:
@@ -22,6 +19,6 @@ def count():
     """
     Counts the number of files in the input directory.
 
-    Assumes all the other files are input files.
+    Assumes all the files are input files.
     """
     return len(os.listdir(resources.path('time_slices')))

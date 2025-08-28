@@ -1,74 +1,44 @@
 package ar.edu.itba.sims;
 
 import ar.edu.itba.sims.models.Particle;
-import ar.edu.itba.sims.models.Vector;
 import ar.edu.itba.sims.neighbours.CIM;
+import me.tongfei.progressbar.ProgressBar;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Executors;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        InitialConditions ic = InitialStateParser.parse("initial_conditions.json", InitialConditions.class);
+    private static final int animation_step = 5;
+    private static final String directoryPath = "src/main/resources/time_slices";
 
+    public static void main(String[] args) throws IOException {
+        final var ic = InitialStateParser.parse(System.getProperty("input", "initial_conditions.json"));
         final int resume = Integer.valueOf(args.length > 0 ? args[0] : "0");
 
-        List<Particle> particles;
+        final Simulator simulator;
         if (resume > 0) {
             System.out.println("Resuming simulation from step " + resume);
-            // Retrieve the particles from the previous animation step
-            final var prev = resume / 5 /* Animation step */ - (resume % 5 == 0 ? 1 : 0);
-            particles = InitialStateParser.parseParticles(prev);
+
+            var particles = InitialStateParser.parseParticles(resume / animation_step);
+            simulator = new Simulator(particles, ic, resume);
         } else {
-            particles = InitialStateParser.buildInitialState(ic);
+            var particles = InitialStateParser.buildInitialState(ic);
+            simulator = new Simulator(particles, ic);
         }
 
-        double L = ic.getL();
-        double Rc = ic.getR();
-        double noise = ic.getNoise();
-        int steps = ic.getSteps();
-        double v = ic.getV();
-        simulate(L, Rc, noise, steps, v, particles, resume);
-    }
-
-    public static List<Particle> nextFrame(Map<Particle, List<Particle>> particles_neighbors, double L, double noise,
-            double v) {
-
-        List<Particle> result = new ArrayList<>();
-
-        for (Map.Entry<Particle, List<Particle>> entry : particles_neighbors.entrySet()) {
-            // ================== POSITION ====================
-            Vector velocity = entry.getKey().getVelocity();
-            double newX = entry.getKey().getX() + velocity.getX();
-            double newY = entry.getKey().getY() + velocity.getY();
-
-            // Check boundaries
-            if (newX < 0 || newX > L) {
-                newX = Math.abs(newX + L) % L; // Wrap around horizontally
-            }
-            if (newY < 0 || newY > L) {
-                newY = Math.abs(newY + L) % L; // Wrap around vertically
-            }
-
-            double newTheta = entry.getKey().computeAvgTheta(entry.getValue()) + (Math.random() - 0.5) * noise;
-
-            result.add(new Particle(newX, newY, entry.getKey().getR(), entry.getKey().getV(), newTheta));
-        }
-        return result;
+        simulate(simulator, resume > 0);
     }
 
     private static void preparePath(String path, boolean preserve) {
-        final File directory = new File(path);
+        final var directory = new File(path);
         if (!directory.exists()) {
             directory.mkdirs();
         } else if (!preserve) {
-            for (File file : directory.listFiles()) {
+            for (final var file : directory.listFiles()) {
                 if (file.isFile()) {
                     file.delete();
                 }
@@ -76,39 +46,33 @@ public class Main {
         }
     }
 
-    public static void simulate(double L, double Rc, double noise, int steps, double v, List<Particle> particles, int resume)
-            throws IOException {
-        final var executor = Executors.newFixedThreadPool(3);
+    public static void simulate(final Simulator simulator, final boolean resume) throws IOException {
+        try (final var executor = Executors.newFixedThreadPool(3);
+                final var pb = new ProgressBar("Simulating", simulator.getSteps())) {
+            final var iterator = simulator.iterator();
 
-        final var directoryPath = "src/main/resources/time_slices";
-        preparePath(directoryPath, resume != 0);
+            preparePath(directoryPath, resume);
 
-        // Resuming with the info from the previous step
-        if (resume > 0) {
-            final var particles_neighbors = CIM.evaluate(particles, L, Rc);
-            particles = nextFrame(particles_neighbors, L, noise, v);
+            if (!resume) {
+                executor.submit(new Animator(0, simulator.getInitialState()));
+            } else if (iterator.hasNext()) {
+                // Skip the first iteration if resuming
+                iterator.next();
+            }
+
+            while (iterator.hasNext()) {
+                final var iteration = iterator.next();
+                final var i = iteration.step();
+
+                if (i % animation_step == 0) {
+                    executor.submit(new Animator(i / animation_step, iteration.particles()));
+                }
+
+                pb.stepTo(i);
+            }
+        } finally {
+            CIM.shutdown();
         }
-
-        final var animation_step = 5;
-        final var progress_step = steps / 10;
-        for (int i = resume; i < steps; i++) {
-            if (i % animation_step == 0) {
-                executor.submit(new Animator(i / animation_step, particles));
-            }
-
-            if (i % progress_step == 0) {
-                System.out.println("Progress: " + (i * 100 / steps) + "%");
-            }
-
-            // If not the last step, calculate the next frame
-            if (i + 1 != steps) {
-                final var particles_neighbors = CIM.evaluate(particles, L, Rc);
-                particles = nextFrame(particles_neighbors, L, noise, v);
-            }
-        }
-
-        executor.shutdown();
-        CIM.shutdown();
     }
 
     private record Animator(int frame, List<Particle> particles) implements Runnable {

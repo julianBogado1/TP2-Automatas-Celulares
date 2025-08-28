@@ -41,8 +41,7 @@ public class Observables {
     }
 
     private void observe(final File[] files) {
-        final ExecutorService executor = Executors.newFixedThreadPool(12);
-
+        final var executor = Executors.newFixedThreadPool(12);
         try {
             observer.observe(executor, files);
         } finally {
@@ -51,7 +50,7 @@ public class Observables {
     }
 
     private void v_a(final ExecutorService executor, final File[] files) {
-        final var ic = InitialStateParser.parse("initial_conditions.json", InitialConditions.class);
+        final var ic = InitialStateParser.parse("initial_conditions.json");
         final var v = ic.getV();
 
         final var output = new ConcurrentHashMap<Integer, Double>(files.length + 1, 1.0f);
@@ -81,12 +80,12 @@ public class Observables {
         }
 
         final var folder = "src/main/resources/order_parameter/";
-        final File directory = new File(folder);
+        final var directory = new File(folder);
         if (!directory.exists()) {
             directory.mkdirs();
         }
 
-        final var filename = "N-%d L-%.2f Ruido-%.2f.txt".formatted(ic.getN(), ic.getL(), ic.getNoise());
+        final var filename = "%s N-%d L-%.2f Ruido-%.2f.txt".formatted(ic.getInteraction(), ic.getN(), ic.getL(), ic.getNoise());
         try (final var writer = new BufferedWriter(new FileWriter(Paths.get(folder, filename).toString()))) {
             latch.await();
 
