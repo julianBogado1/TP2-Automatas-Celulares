@@ -1,4 +1,7 @@
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
+
+import numpy as np
 
 import os
 
@@ -21,16 +24,26 @@ for filename in sources:
         numbers = [float(line.strip()) for line in f if line.strip()]
 
     y_axis = list(range(0, len(numbers) * 5, 5))
-    ax.plot(y_axis, numbers, label=filename.replace('.txt', ''))
+    ax.plot(y_axis, numbers)
 
-ax.ticklabel_format(useOffset=False, style='plain')
+def sci_notation(val, _):
+    if val == 0:
+        return rf"$0\times 10^{{0}}$"
+    exponent = int(np.floor(np.log10(abs(val))))
+    coeff = val / 10**exponent
+    # if int(coeff) == 1:
+    #     return rf"$10^{{{exponent}}}$"
+    return rf"${coeff:.0f}\times 10^{{{exponent}}}$"
 
-fig.tight_layout()
-fig.subplots_adjust(right=0.8)
-fig.legend(loc=7)
+ax.xaxis.set_major_formatter(FuncFormatter(sci_notation))
+ax.yaxis.set_major_formatter(FuncFormatter(sci_notation))
 
-plt.title('Orden en funcion de los pasos')
-plt.xlabel('Pasos')
-plt.ylabel('Orden')
+# ax.ticklabel_format(useOffset=False, style='plain')
+
+# ax.xaxis.set_major_formatter(ScalarFormatter(useMathText=True))
+# ax.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+
+plt.xlabel('Pasos', fontsize=20)
+plt.ylabel('Orden', fontsize=20)
 plt.grid(True)
 plt.show()
