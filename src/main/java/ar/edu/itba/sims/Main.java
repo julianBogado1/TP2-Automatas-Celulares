@@ -35,11 +35,11 @@ public abstract class Main{
     }
 
     private static void preparePath(String path, boolean preserve) {
-        final File directory = new File(path);
+        final var directory = new File(path);
         if (!directory.exists()) {
             directory.mkdirs();
         } else if (!preserve) {
-            for (File file : directory.listFiles()) {
+            for (final var file : directory.listFiles()) {
                 if (file.isFile()) {
                     file.delete();
                 }

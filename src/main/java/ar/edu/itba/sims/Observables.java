@@ -80,7 +80,7 @@ public class Observables {
         }
 
         final var folder = "src/main/resources/order_parameter/";
-        final File directory = new File(folder);
+        final var directory = new File(folder);
         if (!directory.exists()) {
             directory.mkdirs();
         }

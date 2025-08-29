@@ -1,8 +1,8 @@
 package ar.edu.itba.sims.models;
 
 public class Vector {
-    public double x;
-    public double y;
+    private double x;
+    private double y;
 
     public Vector(double x, double y) {
         this.x = x;
