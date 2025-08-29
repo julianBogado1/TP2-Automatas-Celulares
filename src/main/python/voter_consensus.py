@@ -73,8 +73,8 @@ with open(f"order_parameters/consensus_time_step{sys.argv[1]}.txt", "w") as out_
         with open(path('initial_conditions.json'), 'r') as f:
             config = json.load(f)
 
-        # densities = np.logspace(-2,2, 10).tolist()
-        densities = [0.1]
+        # densities = np.logspace(2,3, 3).tolist()
+        densities = [170, 200]
         N = config['n']
         timesteps = [tau_approx(N, rho) for rho in densities]
         print(densities)

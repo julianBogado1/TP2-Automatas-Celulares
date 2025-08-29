@@ -1,5 +1,6 @@
 package ar.edu.itba.sims;
 
+import ar.edu.itba.sims.models.Matrix;
 import ar.edu.itba.sims.models.Particle;
 import ar.edu.itba.sims.neighbours.CIM;
 import me.tongfei.progressbar.ProgressBar;
@@ -11,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Executors;
 
-public class Main {
+public abstract class Main{
     private static final int animation_step = 5;
     private static final String directoryPath = "src/main/resources/time_slices";
 

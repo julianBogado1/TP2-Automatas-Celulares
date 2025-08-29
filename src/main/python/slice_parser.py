@@ -20,7 +20,7 @@ def parse_file(filepath):
 
 def main():
     folder = "./order_parameters"
-    files = sorted(glob.glob(os.path.join(folder, "consensus_time_step*.txt")))
+    files = sorted(glob.glob(os.path.join(folder, "v*.txt")))
 
     plt.figure(figsize=(10, 6))
 
@@ -36,14 +36,21 @@ def main():
             capsize=4,
             label=label
         )
+
+# ======Mean Field Consesnsus=========
+    N = 600  # Assuming grid size, adjust as needed
+    plt.axhline(y=2*N, color='red', linestyle='--', alpha=0.7, label='2N')
+#=====================================
+
     plt.xscale("log")
-    plt.xlabel("Density")
-    plt.ylabel("Consensus Time Steps (mean)")
-    plt.title("Consensus Time Steps vs Density with Mean Error")
+    plt.xlabel("Densidad")
+    plt.ylabel("Tiempo de Consenso Medio")
+    # plt.title("Consensus Time Steps vs Density with Mean Error")
     plt.legend()
     plt.grid(True, which="both", linestyle="--", alpha=0.6)
     plt.tight_layout()
-    plt.show()
+    plt.savefig("consensus_time_steps.png")
+    # plt.show()
 
 if __name__ == "__main__":
     main()

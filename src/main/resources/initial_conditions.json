@@ -1,10 +1,10 @@
 {
     "r": 1,
-    "v": 0.03,
-    "l": 77,
+    "v": 5,
+    "l": 1,
     "n": 600,
     "noise": 0.0,
-    "steps": 3919,
+    "steps": 7000,
     "interaction": "voter",
     "show_animation": false,
     "save_animation": true

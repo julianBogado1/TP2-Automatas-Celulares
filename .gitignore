@@ -174,12 +174,12 @@ cython_debug/
 **/order_parameter/
 **/animations/*.gif
 **/animations/*.mp4
-**/animations/*.mp4
-
 
 particles_t0.json
 /results
 src/main/python/results
+src/main/resources/c
 Scripts
 pyvenv.cfg
 share/man/man1/ttx.1
+/bibliografia
