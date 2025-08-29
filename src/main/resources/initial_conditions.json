@@ -1,11 +1,9 @@
 {
     "r": 1,
-    "v": 5,
-    "l": 1,
-    "n": 600,
-    "noise": 0.0,
-    "steps": 7000,
-    "interaction": "voter",
-    "show_animation": false,
-    "save_animation": true
+    "v": 0.03,
+    "l": 20,
+    "n": 1000,
+    "noise": 0.4,
+    "steps": 50000,
+    "interaction": "average"
 }
